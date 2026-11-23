@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>body{margin:0;font-family:Manrope,system-ui,sans-serif;color:#2B2421;background:#F6F2EB}a{color:#A04A2A}a:hover{color:#7E3820}button,input,select,textarea{font-family:inherit;font-variant-numeric:tabular-nums}*{box-sizing:border-box}</style>
+</helmet>
+<div style="font-family:Manrope,system-ui,sans-serif;color:#2B2421;font-variant-numeric:tabular-nums;min-height:100vh;display:flex;flex-direction:column;background:#F6F2EB">
+  <div style="background:#2B2421;color:#fff;display:flex;align-items:center;gap:14px;padding:8px 16px;flex-wrap:wrap;font-size:13px">
+    <b style="color:#E6DCD0;letter-spacing:.04em">PROTÓTIPO · ver como</b>
+    <div style="display:flex;gap:4px;padding:3px;border-radius:8px;background:#3E3531">
+      <sc-for list="{{ perfis }}" as="p"><button onClick="{{ p.on }}" style="height:30px;padding:0 12px;border-radius:6px;border:none;background:{{ p.bg }};color:{{ p.fg }};font-weight:800;font-size:13px;cursor:pointer">{{ p.l }}</button></sc-for>
+    </div>
+    <span style="color:#A89C90">|</span>
+    <span style="color:#E6DCD0">Telas de acesso:</span>
+    <sc-for list="{{ acessos }}" as="a"><button onClick="{{ a.on }}" style="all:unset;cursor:pointer;font-weight:700;color:{{ a.fg }};text-decoration:underline;text-underline-offset:3px">{{ a.l }}</button></sc-for>
+    <span style="flex:1"></span>
+    <a href="Celular.dc.html" style="color:#F5E5DB;font-weight:700">Telas de celular</a>
+    <a href="Impressos%20A4.dc.html" style="color:#F5E5DB;font-weight:700">Impressos A4</a>
+    <a href="Design%20System.dc.html" style="color:#F5E5DB;font-weight:700">Design system</a>
+  </div>
+
+  <sc-if value="{{ scr.login }}">
+    <div style="flex:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);min-height:760px">
+      <div style="background:#F3EEE4;display:grid;place-items:center;padding:40px"><div style="width:420px;max-width:100%;aspect-ratio:1;border-radius:50%;background-image:url('assets/logo-cristinas.png');background-size:151.6% auto;background-position:50% 45.6%"></div></div>
+      <div style="display:flex;align-items:center;justify-content:center;padding:40px;background:#fff">
+        <sc-if value="{{ acc.login }}">
+          <div style="width:380px;max-width:100%;display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;flex-direction:column;gap:6px"><h1 style="margin:0;font-family:Jost,sans-serif;font-weight:400;font-size:32px">Entrar</h1><span style="font-size:14px;color:#6E635B">Sistema de gestão da Cristina's Decorações</span></div>
+            <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:14px;font-weight:700">E-mail ou usuário</span><input value="cristina@cristinasdecoracoes.com.br" style="height:46px;border:1px solid #D9CFC1;border-radius:8px;padding:0 12px;font-size:15px"></label>
+            <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:14px;font-weight:700;display:flex;justify-content:space-between">Senha<button onClick="{{ esqueci }}" style="all:unset;cursor:pointer;color:#A04A2A;font-weight:700;font-size:13px">Esqueci minha senha</button></span><input type="password" value="12345678" style="height:46px;border:1px solid #D9CFC1;border-radius:8px;padding:0 12px;font-size:15px"></label>
+            <button onClick="{{ entrar }}" style="height:48px;border-radius:8px;border:none;background:#A04A2A;color:#fff;font-weight:800;font-size:15px;cursor:pointer">Entrar</button>
+            <div style="font-size:13px;color:#6E635B;padding:12px;border-radius:8px;background:#FAF7F2;text-wrap:pretty">Não tem e-mail? Use o usuário que a Cristina criou para você (ex.: <b>bruna.s</b>).</div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ acc.convite }}">
+          <div style="width:380px;max-width:100%;display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:700;color:#A04A2A">Convite de primeiro acesso</span><h1 style="margin:0;font-family:Jost,sans-serif;font-weight:400;font-size:30px">Olá, Bruna! Crie sua senha</h1><span style="font-size:14px;color:#6E635B">Seu usuário é <b>bruna.s</b>. Você vai usar no celular para ver seu ponto.</span></div>
+            <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:14px;font-weight:700">Nova senha</span><input type="password" value="{{ pw }}" onChange="{{ onPw }}" style="height:46px;border:1px solid #D9CFC1;border-radius:8px;padding:0 12px;font-size:15px"></label>
+            <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:14px;font-weight:700">Repita a senha</span><input type="password" value="{{ pw2 }}" onChange="{{ onPw2 }}" style="height:46px;border:1px solid #D9CFC1;border-radius:8px;padding:0 12px;font-size:15px"></label>
+            <div style="display:flex;flex-direction:column;gap:6px;font-size:13px"><sc-for list="{{ pwRules }}" as="r"><span style="display:flex;gap:8px;align-items:center;color:{{ r.fg }};font-weight:700"><span style="width:18px;height:18px;border-radius:50%;background:{{ r.fg }};color:#fff;font-size:10px;display:grid;place-items:center">{{ r.i }}</span>{{ r.l }}</span></sc-for></div>
+            <button onClick="{{ criarSenha }}" style="height:48px;border-radius:8px;border:none;background:#A04A2A;color:#fff;font-weight:800;font-size:15px;cursor:pointer;opacity:{{ pwOp }}">Criar senha e entrar</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ scr.semPerm }}">
+    <div style="flex:1;display:grid;place-items:center;padding:40px;min-height:640px">
+      <div style="width:460px;max-width:100%;background:#fff;border:1px solid #E5DDD1;border-radius:16px;padding:32px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center">
+        <div style="width:56px;height:56px;border-radius:50%;background:#EEE9E2;color:#5E554E;display:grid;place-items:center;font-size:22px;font-weight:800">■</div>
+        <div style="font-family:Jost,sans-serif;font-size:24px;font-weight:500">Esta página não está disponível para você</div>
+        <div style="font-size:14px;color:#6E635B;text-wrap:pretty">O link <b style="font-family:ui-monospace,monospace;font-size:13px">/orcamentos/0118</b> é da área da gestora. Com o perfil <b>Funcionária</b> você vê o seu ponto, o seu banco de horas e os seus espelhos.</div>
+        <button onClick="{{ voltarPerm }}" style="margin-top:6px;height:46px;padding:0 18px;border-radius:8px;border:none;background:#A04A2A;color:#fff;font-weight:800;font-size:14px;cursor:pointer">Ir para o meu ponto</button>
+        <span style="font-size:12px;color:#6E635B">Acha que deveria ter acesso? Fale com a Cristina.</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ scr.func }}">
+    <div style="flex:1;display:flex;justify-content:center;gap:40px;padding:32px;flex-wrap:wrap;align-items:flex-start">
+      <div style="width:390px;height:844px;border-radius:36px;border:10px solid #2B2421;overflow:hidden;background:#F6F2EB;box-shadow:0 20px 50px rgba(43,36,33,.2);flex:none">
+        <dc-import name="PortalFuncionaria" hint-size="370px,824px" style="width:100%;height:100%;display:block"></dc-import>
+      </div>
+      <div style="width:320px;display:flex;flex-direction:column;gap:12px;padding-top:20px">
+        <span style="font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#6E635B">Perfil Funcionária · celular</span>
+        <div style="font-family:Jost,sans-serif;font-size:26px;font-weight:400;line-height:1.2">Bruna vê só o próprio ponto.</div>
+        <div style="font-size:14px;color:#4A403A;line-height:1.6;text-wrap:pretty">Meu ponto, banco de horas, pendências, pedidos de correção e espelhos. Nada de outras funcionárias nem dos outros módulos — o acesso é controlado linha a linha no banco de dados.</div>
+        <button onClick="{{ simPerm }}" style="height:44px;border-radius:8px;border:1px solid #D9CFC1;background:#fff;font-weight:700;font-size:14px;cursor:pointer">Simular: abrir um link de orçamento</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ scr.app }}" hint-placeholder-val="{{ true }}">
+    <div style="flex:1;display:flex;min-height:0">
+      <aside style="width:248px;flex:none;background:#FBF8F3;border-right:1px solid #E5DDD1;display:flex;flex-direction:column;position:sticky;top:0;height:calc(100vh - 46px)">
+        <div style="padding:18px 18px 14px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #EFE8DD">
+          <div style="width:46px;height:46px;border-radius:50%;background:#F3EEE4;display:grid;place-items:center;flex:none;border:1px solid #E5DDD1"><div style="width:34px;height:27px;background-image:url('assets/logo-cristinas.png');background-size:174px auto;background-position:-72.5px -25px"></div></div>
+          <div style="display:flex;flex-direction:column;gap:1px"><span style="font-family:Jost,sans-serif;font-weight:300;font-size:22px;line-height:1">Cristina's</span><span style="font-size:9px;letter-spacing:.32em;font-weight:600;color:#4A403A">DECORAÇÕES</span></div>
+        </div>
+        <nav style="flex:1;overflow:auto;padding:12px 10px;display:flex;flex-direction:column;gap:2px">
+          <sc-for list="{{ navGroups }}" as="g">
+            <sc-if value="{{ g.hasL }}"><div style="padding:14px 10px 6px;font-size:11px;font-weight:800;letter-spacing:.08em;color:#6E635B">{{ g.l }}</div></sc-if>
+            <sc-for list="{{ g.items }}" as="n"><button onClick="{{ n.on }}" style="all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:10px;height:38px;padding:0 10px;border-radius:8px;font-size:14px;font-weight:{{ n.fw }};color:{{ n.fg }};background:{{ n.bg }}" style-hover="background:#F1EAE0"><span style="width:3px;height:18px;border-radius:2px;background:{{ n.bar }}"></span><span style="flex:1">{{ n.l }}</span><sc-if value="{{ n.badge }}"><span style="min-width:22px;height:20px;padding:0 6px;border-radius:10px;background:{{ n.bBg }};color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center">{{ n.badge }}</span></sc-if></button></sc-for>
+          </sc-for>
+        </nav>
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD;display:flex;align-items:center;gap:10px">
+          <div style="width:36px;height:36px;border-radius:50%;background:#F5E5DB;color:#A04A2A;display:grid;place-items:center;font-weight:800">{{ me.ini }}</div>
+          <div style="flex:1;display:flex;flex-direction:column;min-width:0"><b style="font-size:13px">{{ me.n }}</b><span style="font-size:12px;color:#6E635B">{{ me.p }}</span></div>
+          <button onClick="{{ sair }}" style="height:32px;padding:0 10px;border-radius:6px;border:1px solid #D9CFC1;background:#fff;font-size:12px;font-weight:700;cursor:pointer">Sair</button>
+        </div>
+      </aside>
+      <main style="flex:1;min-width:0;padding:26px 32px 48px;display:flex;flex-direction:column;gap:16px">
+        <sc-if value="{{ isCont }}"><div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;background:#E2ECF5;color:#1F4466;font-size:14px;align-self:flex-start"><span style="width:20px;height:20px;border-radius:50%;background:#2D5B82;color:#fff;display:grid;place-items:center;font-size:11px;font-weight:800">i</span><b>Somente leitura</b><span>· Contabilidade Silva &amp; Prado · você pode ver e exportar, sem editar.</span></div></sc-if>
+
+        <sc-if value="{{ r.inicio }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:18px">
+            <div style="display:flex;flex-direction:column;gap:4px"><div style="font-size:13px;font-weight:600;color:#6E635B">Segunda-feira, 09/02/2026</div><h1 style="margin:0;font-family:Jost,sans-serif;font-weight:400;font-size:32px">Bom dia, Cristina</h1></div>
+            <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px">
+              <button onClick="{{ go.pend }}" style="all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border:1px solid #E5DDD1;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px" style-hover="border-color:#C9B9A6">
+                <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:800;color:#6E635B">PONTO · SEMANA 02/02 A 06/02</span><span style="font-size:13px;font-weight:700;color:#A04A2A">Revisar ›</span></div>
+                <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><b style="font-size:40px;line-height:1">8</b><span style="font-size:16px;font-weight:700">pendências</span>
+                  <span style="display:inline-flex;align-items:center;gap:5px;height:26px;padding:0 10px 0 4px;border-radius:13px;font-size:13px;font-weight:800;color:#fff;background:#B0263A"><span style="width:18px;height:18px;border-radius:50%;background:#fff;color:#B0263A;font-size:11px;display:grid;place-items:center">!</span>3 bloqueiam o fechamento</span>
+                  <span style="display:inline-flex;align-items:center;gap:5px;height:26px;padding:0 10px 0 4px;border-radius:13px;font-size:13px;font-weight:800;color:#8A5A00;background:#FAEFD5"><span style="width:18px;height:18px;border-radius:50%;background:#8A5A00;color:#fff;font-size:11px;display:grid;place-items:center">!</span>5 avisos</span></div>
+                <div style="display:flex;flex-direction:column;border-top:1px solid #EFE8DD">
+                  <sc-for list="{{ bloqs }}" as="b"><div style="display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #EFE8DD;font-size:14px"><span><b>{{ b.w }}</b> · {{ b.t }}</span><span style="color:#6E635B">{{ b.d }}</span></div></sc-for>
+                </div>
+              </button>
+              <button onClick="{{ go.sol }}" style="all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border:1px solid #E5DDD1;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px" style-hover="border-color:#C9B9A6">
+                <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:800;color:#6E635B">SOLICITAÇÕES DE CORREÇÃO</span><span style="font-size:13px;font-weight:700;color:#A04A2A">Responder ›</span></div>
+                <div style="display:flex;align-items:baseline;gap:10px"><b style="font-size:40px;line-height:1">2</b><span style="font-size:16px;font-weight:700">aguardando resposta</span></div>
+                <div style="display:flex;flex-direction:column;border-top:1px solid #EFE8DD">
+                  <div style="display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #EFE8DD;font-size:14px"><span><b>Cláudia</b> · atestado de 1 dia</span><span style="color:#6E635B">06/02</span></div>
+                  <div style="display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #EFE8DD;font-size:14px"><span><b>Bruna</b> · volta do almoço 13:20</span><span style="color:#6E635B">02/02</span></div>
+                </div>
+              </button>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px">
+              <button onClick="{{ go.orc }}" style="all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border:1px solid #E5DDD1;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px" style-hover="border-color:#C9B9A6">
+                <span style="font-size:13px;font-weight:800;color:#6E635B">ORÇAMENTOS AGUARDANDO RESPOSTA</span>
+                <div style="display:flex;align-items:baseline;gap:10px"><b style="font-size:34px;line-height:1">3</b><span style="font-size:15px;font-weight:700">enviados · R$ 17.950,00</span></div>
+                <span style="display:inline-flex;align-self:flex-start;align-items:center;gap:5px;height:24px;padding:0 9px 0 4px;border-radius:12px;font-size:12px;font-weight:800;color:#8A5A00;background:#FAEFD5"><span style="width:16px;height:16px;border-radius:50%;background:#8A5A00;color:#fff;font-size:10px;display:grid;place-items:center">◷</span>2 vencem nos próximos 3 dias</span>
+                <div style="font-size:14px;display:flex;flex-direction:column;gap:6px"><span style="display:flex;justify-content:space-between"><span>0119 · Juliana Prado</span><b>vence 11/02</b></span><span style="display:flex;justify-content:space-between"><span>0113 · Marcos Toledo</span><b>vence 12/02</b></span></div>
+              </button>
+              <button onClick="{{ go.rec }}" style="all:unset;box-sizing:border-box;cursor:pointer;background:#2B2421;color:#fff;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px">
+                <span style="font-size:13px;font-weight:800;color:#E6DCD0">A RECEBER · ORÇAMENTOS APROVADOS</span>
+                <b style="font-size:34px;line-height:1">R$ 10.582,65</b>
+                <span style="font-size:14px;color:#E6DCD0">Saldo em aberto de 3 orçamentos</span>
+                <div style="font-size:13px;display:flex;flex-direction:column;gap:5px;color:#F3EEE4"><span style="display:flex;justify-content:space-between"><span>0114 · Helena Carvalho</span><span>R$ 5.480,00</span></span><span style="display:flex;justify-content:space-between"><span>0112 · Luciana Barros</span><span>R$ 3.325,00</span></span><span style="display:flex;justify-content:space-between"><span>0118 · Mariana Couto</span><span>R$ 1.777,65</span></span></div>
+              </button>
+              <button onClick="{{ go.banco }}" style="all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border:1px solid #E5DDD1;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px" style-hover="border-color:#C9B9A6">
+                <span style="font-size:13px;font-weight:800;color:#6E635B">HORA DE CORTE (8H00)</span>
+                <sc-for list="{{ corte }}" as="c"><div style="display:flex;flex-direction:column;gap:4px"><div style="display:flex;justify-content:space-between;font-size:14px"><b>{{ c.n }}</b><span style="font-weight:700;color:{{ c.fg }}">{{ c.t }}</span></div><div style="height:6px;border-radius:3px;background:#EFE8DD;overflow:hidden"><div style="height:100%;width:{{ c.w }};background:{{ c.bar }}"></div></div></div></sc-for>
+              </button>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ r.config }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:18px">
+            <div style="display:flex;flex-direction:column;gap:4px"><div style="font-size:13px;font-weight:600;color:#6E635B">Gestora</div><h1 style="margin:0;font-family:Jost,sans-serif;font-weight:500;font-size:30px">Configurações</h1></div>
+            <div style="background:#fff;border:1px solid #E5DDD1;border-radius:12px;padding:18px;display:grid;grid-template-columns:160px minmax(0,1fr);gap:20px">
+              <div style="display:flex;flex-direction:column;gap:8px;align-items:center"><div style="width:140px;height:140px;border-radius:50%;background-image:url('assets/logo-cristinas.png');background-size:212px auto;background-position:-36px -9.5px;border:1px solid #E5DDD1"></div><button onClick="{{ trocaLogo }}" style="height:34px;padding:0 12px;border-radius:8px;border:1px solid #D9CFC1;background:#fff;font-weight:700;font-size:13px;cursor:pointer">Trocar logo</button></div>
+              <div style="display:flex;flex-direction:column;gap:12px"><b style="font-size:15px">Dados da empresa <span style="font-weight:500;color:#6E635B;font-size:13px">· usados nos PDFs</span></b>
+                <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px"><sc-for list="{{ empresa }}" as="f"><label style="display:flex;flex-direction:column;gap:5px;grid-column:{{ f.span }}"><span style="font-size:13px;font-weight:700">{{ f.l }}</span><input value="{{ f.v }}" style="height:40px;border:1px solid #D9CFC1;border-radius:8px;padding:0 12px;font-size:14px"></label></sc-for></div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px;align-items:start">
+              <div style="background:#fff;border:1px solid #E5DDD1;border-radius:12px;overflow:hidden">
+                <div style="padding:14px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFE8DD"><b style="font-size:15px">Usuários e perfis</b><button onClick="{{ convidar }}" style="height:34px;padding:0 12px;border-radius:8px;border:none;background:#A04A2A;color:#fff;font-weight:700;font-size:13px;cursor:pointer">+ Convidar</button></div>
+                <sc-for list="{{ usuarios }}" as="u"><div style="padding:10px 16px;border-bottom:1px solid #EFE8DD;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1.3fr) 150px 110px;gap:10px;align-items:center;font-size:14px"><b>{{ u.n }}</b><span style="color:#4A403A;font-size:13px">{{ u.e }}</span><select style="height:34px;border:1px solid #D9CFC1;border-radius:6px;padding:0 8px;font-size:13px;background:#fff"><option>{{ u.p }}</option><option>Gestora</option><option>Funcionária</option><option>Contador(a)</option></select><span style="font-size:12px;font-weight:800;color:{{ u.fg }}">{{ u.s }}</span></div></sc-for>
+              </div>
+              <div style="background:#fff;border:1px solid #E5DDD1;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px">
+                <b style="font-size:15px">Numeração</b>
+                <label style="display:grid;grid-template-columns:minmax(0,1fr) 100px;gap:10px;align-items:center;font-size:14px"><span><b>Próximo orçamento</b><br><span style="font-size:12px;color:#6E635B">sequencial, 4 dígitos</span></span><input value="0122" style="height:40px;border:1px solid #D9CFC1;border-radius:8px;padding:0 10px;font-size:15px;font-weight:800;text-align:right"></label>
+                <label style="display:grid;grid-template-columns:minmax(0,1fr) 100px;gap:10px;align-items:center;font-size:14px"><span><b>Próximo recibo</b><br><span style="font-size:12px;color:#6E635B">não reaproveita cancelados</span></span><input value="0046" style="height:40px;border:1px solid #D9CFC1;border-radius:8px;padding:0 10px;font-size:15px;font-weight:800;text-align:right"></label>
+                <label style="display:grid;grid-template-columns:minmax(0,1fr) 100px;gap:10px;align-items:center;font-size:14px"><span><b>Validade padrão</b><br><span style="font-size:12px;color:#6E635B">dos orçamentos</span></span><input value="30 dias" style="height:40px;border:1px solid #D9CFC1;border-radius:8px;padding:0 10px;font-size:15px;font-weight:800;text-align:right"></label>
+                <button onClick="{{ salvarCfg }}" style="height:40px;border-radius:8px;border:none;background:#A04A2A;color:#fff;font-weight:700;font-size:14px;cursor:pointer">Salvar</button>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <div style="display:{{ show.ponto }}"><dc-import name="Ponto" view="{{ sub.ponto }}" read-only="{{ isCont }}" on-navigate="{{ navTo }}" toast="{{ toast }}" hint-size="100%,600px"></dc-import></div>
+        <div style="display:{{ show.orc }}"><dc-import name="Orcamentos" view="{{ sub.orc }}" on-navigate="{{ navTo }}" toast="{{ toast }}" hint-size="100%,600px"></dc-import></div>
+        <div style="display:{{ show.rec }}"><dc-import name="Recibos" view="{{ sub.rec }}" read-only="{{ isCont }}" on-navigate="{{ navTo }}" toast="{{ toast }}" hint-size="100%,500px"></dc-import></div>
+      </main>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toastOn }}"><div style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:80;background:#2B2421;color:#fff;padding:12px 18px;border-radius:10px;font-size:14px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,.2)">✓ {{ toastMsg }}</div></sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;startRoute&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;inicio&quot;,&quot;ponto.semana&quot;,&quot;ponto.pendencias&quot;,&quot;ponto.solicitacoes&quot;,&quot;ponto.importar&quot;,&quot;ponto.banco&quot;,&quot;ponto.fechamento&quot;,&quot;orc.lista&quot;,&quot;orc.editor&quot;,&quot;rec.lista&quot;,&quot;rec.emitir&quot;,&quot;config&quot;],&quot;default&quot;:&quot;inicio&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state={perfil:'gestora',screen:'app',acc:'login',route:'inicio',contRoute:'ponto.relatorios',msg:'',pw:'',pw2:''};
+  componentDidMount(){const r=this.props.startRoute;if(r)this.setState({route:r})}
+  toast=m=>{this.setState({msg:m});clearTimeout(this._t);this._t=setTimeout(()=>this.setState({msg:''}),2600)};
+  navTo=r=>{if(typeof window!=='undefined')window.scrollTo(0,0);this.setState(this.state.perfil==='contador'?{contRoute:r}:{route:r})};
+  renderVals(){const s=this.state,cont=s.perfil==='contador';const route=cont?s.contRoute:s.route;const [mod,sub]=route.split('.');
+    const G=[{l:'',items:[['inicio','Início']]},{l:'PONTO E RH',items:[['ponto.semana','Semana'],['ponto.pendencias','Pendências','8','#B0263A'],['ponto.solicitacoes','Solicitações','2','#2D5B82'],['ponto.importar','Importar arquivo'],['ponto.banco','Banco de horas'],['ponto.fechamento','Fechamento'],['ponto.equipe','Equipe'],['ponto.calendario','Calendário e regras']]},{l:'VENDAS',items:[['orc.lista','Orçamentos'],['orc.clientes','Clientes'],['orc.catalogo','Catálogo e preços']]},{l:'FINANCEIRO',items:[['rec.lista','Recibos']]},{l:'',items:[['config','Configurações']]}];
+    const GC=[{l:'RELATÓRIOS DE RH',items:[['ponto.relatorios','Semanas e espelhos'],['ponto.banco','Banco de horas']]},{l:'FINANCEIRO',items:[['rec.lista','Recibos']]}];
+    const activeKey=route==='orc.editor'?'orc.lista':route==='orc.cliente'?'orc.clientes':route==='rec.emitir'?'rec.lista':route;
+    const navGroups=(cont?GC:G).map(g=>({l:g.l,hasL:!!g.l,items:g.items.map(([k,l,b,bc])=>{const on=k===activeKey;return{l,badge:b||'',bBg:bc,on:()=>this.navTo(k),fw:on?800:600,fg:on?'#7E3820':'#2B2421',bg:on?'#F5E5DB':'transparent',bar:on?'#A04A2A':'transparent'}})}));
+    const pf=(k,l)=>({l,on:()=>this.setState({perfil:k,screen:k==='funcionaria'?'func':'app'}),bg:s.perfil===k&&s.screen!=='login'&&s.screen!=='semPerm'?'#F5E5DB':'transparent',fg:s.perfil===k?'#2B2421':'#fff'});
+    const perfis=[pf('gestora','Gestora'),pf('funcionaria','Funcionária'),pf('contador','Contador(a)')].map(p=>({...p,fg:p.bg==='transparent'?'#fff':'#2B2421'}));
+    const acc=(k,l,fn)=>({l,on:fn,fg:'#F3EEE4'});
+    const pwOk=[s.pw.length>=8,/\d/.test(s.pw),s.pw&&s.pw===s.pw2];
+    return{perfis,acessos:[acc('login','Login',()=>this.setState({screen:'login',acc:'login'})),acc('convite','Primeiro acesso',()=>this.setState({screen:'login',acc:'convite'})),acc('perm','Sem permissão',()=>this.setState({screen:'semPerm'}))],
+      scr:{login:s.screen==='login',semPerm:s.screen==='semPerm',func:s.screen==='func',app:s.screen==='app'},acc:{login:s.acc==='login',convite:s.acc==='convite'},
+      entrar:()=>this.setState({screen:'app',perfil:'gestora',route:'inicio'}),esqueci:()=>this.toast('Enviamos um link de redefinição para o seu e-mail'),
+      pw:s.pw,pw2:s.pw2,onPw:e=>this.setState({pw:e.target.value}),onPw2:e=>this.setState({pw2:e.target.value}),pwRules:[['Pelo menos 8 caracteres',pwOk[0]],['Pelo menos 1 número',pwOk[1]],['As duas senhas iguais',pwOk[2]]].map(([l,ok])=>({l,i:ok?'✓':'○',fg:ok?'#2E6E47':'#8A7F76'})),pwOp:pwOk.every(Boolean)?1:.45,criarSenha:()=>{if(pwOk.every(Boolean))this.setState({screen:'func',perfil:'funcionaria'})},
+      voltarPerm:()=>this.setState({screen:'func',perfil:'funcionaria'}),simPerm:()=>this.setState({screen:'semPerm'}),
+      navGroups,isCont:cont,me:cont?{ini:'SP',n:'Silva & Prado',p:'Contador(a)'}:{ini:'C',n:'Cristina Martins',p:'Gestora'},sair:()=>this.setState({screen:'login',acc:'login'}),
+      r:{inicio:route==='inicio',config:route==='config'},show:{ponto:mod==='ponto'?'block':'none',orc:mod==='orc'?'block':'none',rec:mod==='rec'?'block':'none'},
+      sub:{ponto:mod==='ponto'?sub:'semana',orc:mod==='orc'?sub:'lista',rec:mod==='rec'?sub:'lista'},navTo:this.navTo,toast:this.toast,
+      go:{pend:()=>this.navTo('ponto.pendencias'),sol:()=>this.navTo('ponto.solicitacoes'),orc:()=>this.navTo('orc.lista'),rec:()=>this.navTo('rec.lista'),banco:()=>this.navTo('ponto.banco')},
+      bloqs:[{w:'Bruna',t:'faltou a volta do almoço',d:'seg 02/02'},{w:'Denise',t:'faltou a saída',d:'ter 03/02'},{w:'ID 117',t:'desconhecido na catraca',d:'ter 03/02'}],
+      corte:[{n:'Ana Paula',t:'✓ fechou · 8h15',w:'100%',bar:'#2E6E47',fg:'#2E6E47'},{n:'Denise',t:'✓ fechou na tolerância · 7h55',w:'99%',bar:'#2E6E47',fg:'#2E6E47'},{n:'Bruna',t:'6h54 · faltam 1h06',w:'86%',bar:'#C2683F',fg:'#2B2421'}],
+      empresa:[['Razão social','Cristina\u2019s Decorações Ltda.','span 2'],['CNPJ','12.345.678/0001-90',''],['Telefone / WhatsApp','(19) 99812-4470',''],['Endereço','R. Barão de Jaguara, 1250 — Centro, Campinas/SP · 13015-002','span 2'],['Chave PIX','12.345.678/0001-90 (CNPJ)',''],['E-mail','contato@cristinasdecoracoes.com.br','']].map(([l,v,span])=>({l,v,span:span||'auto'})),
+      usuarios:[['Cristina Martins','cristina@cristinasdecoracoes.com.br','Gestora','Ativo'],['Ana Paula Ribeiro','anapaula@gmail.com','Funcionária','Ativo'],['Bruna Santos','bruna.s (sem e-mail)','Funcionária','Ativo'],['Denise Almeida','denise.a (sem e-mail)','Funcionária','Convite enviado'],['Silva & Prado Contabilidade','fiscal@silvaprado.com.br','Contador(a)','Ativo']].map(([n,e,p,st])=>({n,e,p,s:st,fg:st==='Ativo'?'#2E6E47':'#8A5A00'})),
+      convidar:()=>this.toast('Convite criado'),salvarCfg:()=>this.toast('Configurações salvas'),trocaLogo:()=>this.toast('Escolha a nova imagem do logo'),
+      toastOn:!!s.msg,toastMsg:s.msg};
+  }
+}
+</script>
+</body>
+</html>

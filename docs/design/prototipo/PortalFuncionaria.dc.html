@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>body{margin:0;font-family:Manrope,system-ui,sans-serif;color:#2B2421;background:#F6F2EB}a{color:#A04A2A}a:hover{color:#7E3820}button,input,select,textarea{font-family:inherit;font-variant-numeric:tabular-nums}</style>
+</helmet>
+<div style="font-family:Manrope,system-ui,sans-serif;color:#2B2421;font-variant-numeric:tabular-nums;height:100%;min-height:780px;display:flex;flex-direction:column;background:#F6F2EB;position:relative;overflow:hidden">
+  <div style="padding:16px 18px 12px;background:#fff;border-bottom:1px solid #E5DDD1;display:flex;align-items:center;gap:12px">
+    <sc-if value="{{ isSub }}"><button onClick="{{ back }}" aria-label="Voltar" style="width:44px;height:44px;border-radius:10px;border:1px solid #D9CFC1;background:#fff;font-size:20px;cursor:pointer;flex:none">‹</button></sc-if>
+    <sc-if value="{{ isMain }}"><div style="width:44px;height:44px;border-radius:50%;background:#F5E5DB;color:#A04A2A;display:grid;place-items:center;font-weight:800;font-size:16px;flex:none">B</div></sc-if>
+    <div style="flex:1;display:flex;flex-direction:column;gap:1px"><span style="font-size:12px;color:#6E635B;font-weight:600">{{ sub }}</span><span style="font-family:Jost,sans-serif;font-size:21px;font-weight:500">{{ title }}</span></div>
+  </div>
+
+  <div style="flex:1;overflow:auto;padding:16px 16px 24px;display:flex;flex-direction:column;gap:14px">
+    <sc-if value="{{ t.ponto }}" hint-placeholder-val="{{ true }}">
+      <sc-if value="{{ hasPend }}"><button onClick="{{ goPend }}" style="all:unset;box-sizing:border-box;cursor:pointer;display:flex;gap:12px;align-items:center;padding:14px;border-radius:12px;background:#FBE5E7;color:#B0263A;min-height:44px"><span style="width:26px;height:26px;border-radius:50%;background:#B0263A;color:#fff;display:grid;place-items:center;font-weight:800;flex:none">!</span><span style="flex:1;font-size:14px;font-weight:700;color:#7E1C2B">Você tem 1 pendência. Toque para resolver.</span><span style="font-size:20px">›</span></button></sc-if>
+      <div style="display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #E5DDD1;border-radius:12px;padding:6px">
+        <button onClick="{{ prevW }}" aria-label="Semana anterior" style="width:44px;height:44px;border-radius:8px;border:none;background:#F6F1EA;font-size:20px;cursor:pointer">‹</button>
+        <div style="flex:1;text-align:center;display:flex;flex-direction:column"><b style="font-size:15px">{{ wk.l }}</b><span style="font-size:12px;color:#6E635B">{{ wk.tot }}</span></div>
+        <button onClick="{{ nextW }}" aria-label="Próxima semana" style="width:44px;height:44px;border-radius:8px;border:none;background:#F6F1EA;font-size:20px;cursor:pointer;opacity:{{ nextOp }}">›</button>
+      </div>
+      <sc-for list="{{ days }}" as="d" hint-placeholder-count="5">
+        <div style="background:#fff;border:1px solid {{ d.bd }};border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><b style="font-size:15px">{{ d.l }}</b><span style="display:flex;align-items:center;gap:8px"><b style="font-size:18px">{{ d.h }}</b></span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+            <span style="font-size:13px;color:#4A403A;letter-spacing:.02em">{{ d.b }}</span>
+            <span style="display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 9px 0 4px;border-radius:12px;font-size:12px;font-weight:700;color:{{ d.s.fg }};background:{{ d.s.bg }}"><span style="width:16px;height:16px;border-radius:50%;background:{{ d.s.fg }};color:#fff;font-size:10px;display:grid;place-items:center">{{ d.s.i }}</span>{{ d.s.l }}</span>
+          </div>
+          <sc-if value="{{ d.pend }}"><button onClick="{{ goFix }}" style="height:44px;border-radius:8px;border:none;background:#A04A2A;color:#fff;font-weight:800;font-size:14px;cursor:pointer">Informar a volta do almoço</button></sc-if>
+        </div>
+      </sc-for>
+      <button onClick="{{ goNew }}" style="height:48px;border-radius:10px;border:1px solid #D9CFC1;background:#fff;font-weight:800;font-size:14px;cursor:pointer">Pedir correção de outra batida</button>
+    </sc-if>
+
+    <sc-if value="{{ t.banco }}" hint-placeholder-val="{{ false }}">
+      <div style="background:#fff;border:1px solid #E5DDD1;border-radius:14px;padding:20px 18px;display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:13px;color:#6E635B;font-weight:700">Até a hora de corte</span>
+        <div style="display:flex;align-items:baseline;gap:8px"><b style="font-size:40px;letter-spacing:-.02em">6h53</b><span style="font-size:18px;color:#6E635B;font-weight:600">de 8h00</span></div>
+        <div style="height:14px;border-radius:7px;background:#EFE8DD;overflow:hidden"><div style="width:86%;height:100%;background:#C2683F;border-radius:7px"></div></div>
+        <div style="font-size:16px;font-weight:700;color:#2B2421;text-wrap:pretty">Faltam 1h07 para você ganhar um dia pago.</div>
+        <div style="font-size:13px;color:#6E635B;text-wrap:pretty">Quando chegar a 8h00 (com 10 min de tolerância), você ganha 1 dia de folga paga e o que passar segue para a semana seguinte.</div>
+      </div>
+      <div style="background:#fff;border:1px solid #E5DDD1;border-radius:14px;overflow:hidden">
+        <div style="padding:12px 16px;font-weight:800;font-size:14px;border-bottom:1px solid #EFE8DD">Como chegou aqui</div>
+        <sc-for list="{{ bancoLinhas }}" as="b"><div style="padding:12px 16px;border-bottom:1px solid #EFE8DD;display:flex;justify-content:space-between;font-size:15px"><span>{{ b.l }}</span><b>{{ b.v }}</b></div></sc-for>
+      </div>
+      <div style="background:#fff;border:1px solid #E5DDD1;border-radius:14px;overflow:hidden">
+        <div style="padding:12px 16px;font-weight:800;font-size:14px;border-bottom:1px solid #EFE8DD">Dias pagos</div>
+        <div style="padding:12px 16px;display:flex;justify-content:space-between;font-size:15px;align-items:center"><span>Semana 05/01 a 09/01</span><span style="display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 9px 0 4px;border-radius:12px;font-size:12px;font-weight:800;color:#2E6E47;background:#E3F0E7"><span style="width:16px;height:16px;border-radius:50%;background:#2E6E47;color:#fff;font-size:10px;display:grid;place-items:center">✓</span>1 dia pago</span></div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ t.pendencias }}" hint-placeholder-val="{{ false }}">
+      <sc-if value="{{ hasPend }}">
+        <button onClick="{{ goFix }}" style="all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border:1px solid #F0C9CE;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px">
+          <span style="display:inline-flex;align-self:flex-start;align-items:center;gap:5px;height:24px;padding:0 9px 0 4px;border-radius:12px;font-size:12px;font-weight:800;color:#B0263A;background:#FBE5E7"><span style="width:16px;height:16px;border-radius:50%;background:#B0263A;color:#fff;font-size:10px;display:grid;place-items:center">!</span>Pendente</span>
+          <span style="font-size:17px;font-weight:700;line-height:1.4;text-wrap:pretty">Você esqueceu de bater a volta do almoço em 02/02. Informe o horário.</span>
+          <span style="font-size:13px;color:#6E635B">Batidas do dia: 07:01 · 12:19 · 17:00</span>
+          <span style="height:48px;border-radius:10px;background:#A04A2A;color:#fff;font-weight:800;font-size:15px;display:grid;place-items:center">Informar horário</span>
+        </button>
+      </sc-if>
+      <sc-if value="{{ noPend }}"><div style="background:#fff;border:1px solid #E5DDD1;border-radius:14px;padding:28px 18px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center"><span style="width:44px;height:44px;border-radius:50%;background:#E3F0E7;color:#2E6E47;display:grid;place-items:center;font-weight:800;font-size:20px">✓</span><b style="font-size:17px">Tudo certo com o seu ponto</b><span style="font-size:14px;color:#6E635B">Sua correção foi enviada. A Cristina vai responder em breve.</span></div></sc-if>
+    </sc-if>
+
+    <sc-if value="{{ t.corrigir }}" hint-placeholder-val="{{ false }}">
+      <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:14px;font-weight:700">Dia</span><select value="{{ f.dia }}" onChange="{{ onDia }}" style="height:50px;border:1px solid #D9CFC1;border-radius:10px;padding:0 12px;font-size:16px;background:#fff"><option value="02/02">Segunda, 02/02</option><option value="03/02">Terça, 03/02</option><option value="04/02">Quarta, 04/02</option><option value="05/02">Quinta, 05/02</option><option value="06/02">Sexta, 06/02</option></select></label>
+      <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:14px;font-weight:700">Qual batida?</span><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><sc-for list="{{ batOpts }}" as="b"><button onClick="{{ b.on }}" style="height:50px;border-radius:10px;border:1.5px solid {{ b.bd }};background:{{ b.bg }};color:{{ b.fg }};font-weight:800;font-size:14px;cursor:pointer">{{ b.l }}</button></sc-for></div></div>
+      <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:14px;font-weight:700">Horário</span><input value="{{ f.hora }}" onChange="{{ onHora }}" inputMode="numeric" placeholder="HH:MM" style="height:58px;border:1px solid #D9CFC1;border-radius:10px;padding:0 14px;font-size:26px;font-weight:800;letter-spacing:.04em"></label>
+      <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:14px;font-weight:700">Motivo</span><textarea value="{{ f.mot }}" onChange="{{ onMot }}" rows="3" placeholder="Ex.: esqueci de bater na volta do almoço" style="border:1px solid #D9CFC1;border-radius:10px;padding:12px 14px;font-size:16px;resize:none"></textarea></label>
+      <button onClick="{{ togFoto }}" style="min-height:56px;border-radius:10px;border:1.5px dashed #CFC3B3;background:#fff;font-weight:700;font-size:14px;cursor:pointer;color:#4A403A;display:flex;align-items:center;justify-content:center;gap:10px;padding:8px">{{ fotoL }}</button>
+      <button onClick="{{ enviar }}" style="height:54px;border-radius:12px;border:none;background:#A04A2A;color:#fff;font-weight:800;font-size:16px;cursor:pointer;opacity:{{ envOp }}">Enviar para a Cristina</button>
+    </sc-if>
+
+    <sc-if value="{{ t.solicitacoes }}" hint-placeholder-val="{{ false }}">
+      <sc-for list="{{ sols }}" as="s">
+        <div style="background:#fff;border:1px solid #E5DDD1;border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><b style="font-size:15px">{{ s.dia }} · {{ s.bat }}</b><span style="display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 9px 0 4px;border-radius:12px;font-size:12px;font-weight:800;color:{{ s.b.fg }};background:{{ s.b.bg }}"><span style="width:16px;height:16px;border-radius:50%;background:{{ s.b.fg }};color:#fff;font-size:10px;display:grid;place-items:center">{{ s.b.i }}</span>{{ s.b.l }}</span></div>
+          <span style="font-size:14px">Pedido: <b>{{ s.hora }}</b> · {{ s.mot }}</span>
+          <sc-if value="{{ s.hasResp }}"><div style="font-size:14px;padding:10px 12px;border-radius:8px;background:#FAF7F2"><b>Cristina:</b> {{ s.resp }}</div></sc-if>
+        </div>
+      </sc-for>
+    </sc-if>
+
+    <sc-if value="{{ t.espelhos }}" hint-placeholder-val="{{ false }}">
+      <div style="font-size:13px;color:#6E635B;text-wrap:pretty">O espelho de cada semana fica disponível depois que a Cristina fecha a semana.</div>
+      <div style="background:#fff;border:1px dashed #CFC3B3;border-radius:14px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:8px"><div style="display:flex;flex-direction:column"><b style="font-size:15px">02/02 a 06/02/2026</b><span style="font-size:13px;color:#6E635B">Semana em aberto</span></div><span style="font-size:12px;font-weight:800;color:#8A5A00;background:#FAEFD5;padding:4px 9px;border-radius:12px">○ Aguardando</span></div>
+      <sc-for list="{{ espelhos }}" as="e">
+        <a href="Impressos%20A4.dc.html#espelho" style="text-decoration:none;color:#2B2421;background:#fff;border:1px solid #E5DDD1;border-radius:14px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:44px"><div style="display:flex;flex-direction:column"><b style="font-size:15px">{{ e.l }}</b><span style="font-size:13px;color:#6E635B">{{ e.d }}</span></div><span style="display:flex;align-items:center;gap:6px;height:40px;padding:0 12px;border-radius:8px;border:1px solid #D9CFC1;font-weight:800;font-size:13px"><span style="font-size:10px;color:#fff;background:#B0263A;border-radius:3px;padding:2px 4px">PDF</span>Baixar</span></a>
+      </sc-for>
+    </sc-if>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);background:#fff;border-top:1px solid #E5DDD1;padding:4px 4px 10px">
+    <sc-for list="{{ nav }}" as="n"><button onClick="{{ n.on }}" style="all:unset;box-sizing:border-box;cursor:pointer;min-height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;position:relative;color:{{ n.fg }}">
+      <span style="width:28px;height:4px;border-radius:2px;background:{{ n.bar }}"></span>
+      <span style="font-size:12px;font-weight:800">{{ n.l }}</span>
+      <sc-if value="{{ n.badge }}"><span style="position:absolute;top:6px;right:14px;min-width:18px;height:18px;border-radius:9px;background:#B0263A;color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center">{{ n.badge }}</span></sc-if>
+    </button></sc-for>
+  </div>
+  <sc-if value="{{ toastOn }}"><div style="position:absolute;left:16px;right:16px;bottom:84px;background:#2B2421;color:#fff;padding:14px 16px;border-radius:12px;font-size:14px;font-weight:700">✓ {{ toastMsg }}</div></sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;tab&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ponto&quot;,&quot;banco&quot;,&quot;pendencias&quot;,&quot;corrigir&quot;,&quot;solicitacoes&quot;,&quot;espelhos&quot;],&quot;default&quot;:&quot;ponto&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const ST={OK:{fg:'#2E6E47',bg:'#E3F0E7',i:'✓',l:'OK'},PEND:{fg:'#B0263A',bg:'#FBE5E7',i:'!',l:'Pendência'},AJ:{fg:'#6B4A8E',bg:'#EEE7F5',i:'✎',l:'Ajustado'},WAIT:{fg:'#8A5A00',bg:'#FAEFD5',i:'○',l:'Aguardando'},REC:{fg:'#B0263A',bg:'#FBE5E7',i:'✕',l:'Recusada'},APR:{fg:'#2E6E47',bg:'#E3F0E7',i:'✓',l:'Aprovada'}};
+const WEEKS=[{l:'26/01 a 30/01/2026',tot:'44h22 trabalhadas · semana fechada',days:[['Seg 26/01','07:00 · 12:15 · 13:15 · 17:02','09:02','OK'],['Ter 27/01','06:58 · 12:15 · 13:14 · 17:10','09:13','OK'],['Qua 28/01','07:00 · 12:16 · 13:15 · 17:00','08:59','OK'],['Qui 29/01','07:02 · 12:15 · 13:15 · 17:15','09:13','AJ'],['Sex 30/01','07:00 · 12:15 · 13:15 · 16:10','08:10','OK']]},{l:'02/02 a 06/02/2026',tot:'Semana atual · em aberto',days:[['Seg 02/02','07:01 · 12:19 · — · 17:00','—','PEND'],['Ter 03/02','07:00 · 12:15 · 13:15 · 17:20','09:20','OK'],['Qua 04/02','07:05 · 12:15 · 13:15 · 17:12','09:07','OK'],['Qui 05/02','06:57 · 12:18 · 13:16 · 17:15','09:20','OK'],['Sex 06/02','07:00 · 12:15 · 13:15 · 16:00','08:00','OK']]}];
+const TITLES={ponto:['Bruna Santos','Meu ponto'],banco:['Semana 02/02 a 06/02','Meu banco de horas'],pendencias:['O que precisa da sua atenção','Minhas pendências'],corrigir:['Pedido para a Cristina','Pedir correção'],solicitacoes:['Seus pedidos de correção','Minhas solicitações'],espelhos:['Um PDF por semana','Meus espelhos']};
+class Component extends DCLogic {
+  state={tab:null,wk:1,dia:'02/02',bat:'Volta almoço',hora:'',mot:'',foto:false,sent:false,toastMsg:'',sols:[{dia:'29/01',bat:'Saída',hora:'17:15',mot:'A catraca não leu minha digital.',st:'APR',resp:'Aprovado. Ajustei para 17:15.'},{dia:'12/01',bat:'Entrada',hora:'07:00',mot:'Cheguei no horário.',st:'REC',resp:'A batida das 07:24 confere com a câmera. Mantive o horário da catraca.'}]};
+  tab(){return this.state.tab??this.props.tab??'ponto'}
+  go(t){this.setState({tab:t})}
+  toast(m){this.setState({toastMsg:m});clearTimeout(this._t);this._t=setTimeout(()=>this.setState({toastMsg:''}),2400)}
+  prefill(){this.setState({tab:'corrigir',dia:'02/02',bat:'Volta almoço',hora:'',mot:''})}
+  renderVals(){const s=this.state,tab=this.tab(),t={};Object.keys(TITLES).forEach(k=>t[k]=tab===k);
+    const hasPend=!s.sent;const W=WEEKS[s.wk];
+    const days=W.days.map(([l,b,h,st])=>{const pend=st==='PEND'&&hasPend;const k=st==='PEND'&&!hasPend?'WAIT':st;return{l,b,h,s:k==='WAIT'?{...ST.WAIT,l:'Correção enviada'}:ST[k],pend,bd:pend?'#F0C9CE':'#E5DDD1'}});
+    const fix=v=>{const d=v.replace(/\D/g,'').slice(0,4);return d.length>2?d.slice(0,2)+':'+d.slice(2):d};
+    const ok=/^([01]\d|2[0-3]):[0-5]\d$/.test(s.hora)&&s.mot.trim();
+    const mainTabs=[['ponto','Ponto'],['banco','Banco'],['pendencias','Pendências'],['solicitacoes','Pedidos'],['espelhos','Espelhos']];
+    const [sub,title]=TITLES[tab];
+    return{t,sub,title,isSub:tab==='corrigir',isMain:tab!=='corrigir',back:()=>this.go('pendencias'),hasPend,noPend:!hasPend,goPend:()=>this.go('pendencias'),goFix:()=>this.prefill(),goNew:()=>this.setState({tab:'corrigir',dia:'03/02',bat:'Entrada',hora:'',mot:''}),
+      wk:W,days,prevW:()=>this.setState({wk:0}),nextW:()=>this.setState({wk:1}),nextOp:s.wk===1?.35:1,
+      bancoLinhas:[{l:'Saldo da semana passada',v:'6h07'},{l:'Extras desta semana',v:'+0h46'},{l:'Acumulado',v:'6h53'},{l:'Hora de corte',v:'8h00'}],
+      f:{dia:s.dia,hora:s.hora,mot:s.mot},onDia:e=>this.setState({dia:e.target.value}),onHora:e=>this.setState({hora:fix(e.target.value)}),onMot:e=>this.setState({mot:e.target.value}),
+      batOpts:['Entrada','Saída almoço','Volta almoço','Saída'].map(l=>{const on=s.bat===l;return{l,on:()=>this.setState({bat:l}),bd:on?'#A04A2A':'#D9CFC1',bg:on?'#F5E5DB':'#fff',fg:on?'#7E3820':'#2B2421'}}),
+      fotoL:s.foto?'✓ foto-atestado.jpg anexada · toque para remover':'+ Anexar foto (opcional)',togFoto:()=>this.setState({foto:!s.foto}),envOp:ok?1:.45,
+      enviar:()=>{if(!ok)return;this.setState(x=>({sols:[{dia:x.dia,bat:x.bat,hora:x.hora,mot:x.mot,st:'WAIT',resp:''},...x.sols],sent:x.sent||(x.dia==='02/02'&&x.bat==='Volta almoço'),tab:'solicitacoes'}));this.toast('Pedido enviado para a Cristina')},
+      sols:s.sols.map(x=>({...x,b:ST[x.st],hasResp:!!x.resp})),
+      espelhos:[['26/01 a 30/01/2026','44h22 · gerado em 31/01'],['19/01 a 23/01/2026','44h35 · gerado em 24/01'],['12/01 a 16/01/2026','44h10 · gerado em 17/01'],['05/01 a 09/01/2026','45h02 · gerado em 10/01']].map(([l,d])=>({l,d})),
+      nav:mainTabs.map(([k,l])=>{const on=tab===k||(k==='pendencias'&&tab==='corrigir');return{l,on:()=>this.go(k),fg:on?'#A04A2A':'#5E554E',bar:on?'#A04A2A':'transparent',badge:k==='pendencias'&&hasPend?'1':''}}),
+      toastOn:!!s.toastMsg,toastMsg:s.toastMsg};
+  }
+}
+</script>
+</body>
+</html>

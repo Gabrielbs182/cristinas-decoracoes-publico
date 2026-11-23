@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>body{margin:0;font-family:Manrope,system-ui,sans-serif;color:#2B2421;background:#F6F2EB}a{color:#A04A2A}a:hover{color:#7E3820}button,input,select,textarea{font-family:inherit;font-variant-numeric:tabular-nums}</style>
+</helmet>
+<div style="font-family:Manrope,system-ui,sans-serif;color:#2B2421;font-variant-numeric:tabular-nums;display:flex;flex-direction:column;gap:18px">
+
+<sc-if value="{{ v.lista }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap">
+    <div style="display:flex;flex-direction:column;gap:4px"><div style="font-size:13px;font-weight:600;color:#6E635B">Financeiro</div><h1 style="margin:0;font-family:Jost,sans-serif;font-weight:500;font-size:30px">Recibos</h1></div>
+    <div style="display:flex;gap:10px">
+      <button onClick="{{ exportar }}" style="height:40px;padding:0 14px;border-radius:8px;border:1px solid #D9CFC1;background:#fff;font-weight:600;font-size:14px;cursor:pointer">Exportar .xlsx</button>
+      <sc-if value="{{ canEdit }}"><button onClick="{{ goEmitir }}" style="height:40px;padding:0 16px;border-radius:8px;border:none;background:#A04A2A;color:#fff;font-weight:700;font-size:14px;cursor:pointer">+ Emitir recibo</button></sc-if>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <input value="{{ q }}" onChange="{{ onQ }}" placeholder="Buscar por número, cliente ou orçamento" style="height:38px;width:300px;border:1px solid #D9CFC1;border-radius:8px;padding:0 12px;font-size:14px;background:#fff">
+    <sc-for list="{{ sfOpts }}" as="o"><button onClick="{{ o.on }}" style="height:36px;padding:0 12px;border-radius:18px;border:1px solid {{ o.bd }};background:{{ o.bg }};color:{{ o.fg }};font-weight:700;font-size:13px;cursor:pointer">{{ o.l }}</button></sc-for>
+    <select value="{{ ff }}" onChange="{{ onFf }}" style="height:38px;border:1px solid #D9CFC1;border-radius:8px;padding:0 10px;font-size:13px;background:#fff"><option value="">Todas as formas</option><option>PIX</option><option>Dinheiro</option><option>Cartão</option><option>Transferência</option></select>
+  </div>
+  <div style="background:#fff;border:1px solid #E5DDD1;border-radius:12px;overflow:auto">
+    <div style="display:grid;grid-template-columns:76px 104px minmax(170px,1.6fr) minmax(130px,1.2fr) 130px 120px 120px {{ actW }};min-width:min-content">
+      <sc-for list="{{ head }}" as="h"><div style="padding:10px 14px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#6E635B;background:#FAF7F2;text-align:{{ h.a }}">{{ h.l }}</div></sc-for>
+      <sc-for list="{{ rows }}" as="r" hint-placeholder-count="7"><div style="display:contents">
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD;font-weight:800;font-size:14px;color:{{ r.fg }}">{{ r.n }}</div>
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD;font-size:14px;color:{{ r.fg }}">{{ r.data }}</div>
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD;font-size:14px;color:{{ r.fg }};display:flex;flex-direction:column;gap:1px"><b>{{ r.cli }}</b><span style="font-size:12px;color:#6E635B">{{ r.tipo }}</span></div>
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD;font-size:14px;color:{{ r.fg }}">{{ r.orc }}</div>
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD;font-size:14px;font-weight:700;text-align:right;color:{{ r.fg }};text-decoration:{{ r.deco }}">{{ r.v }}</div>
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD;font-size:14px;color:{{ r.fg }}">{{ r.forma }}</div>
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD;display:flex;flex-direction:column;gap:3px"><span style="display:inline-flex;align-self:flex-start;align-items:center;gap:5px;height:22px;padding:0 8px 0 4px;border-radius:11px;font-size:12px;font-weight:700;color:{{ r.b.fg }};background:{{ r.b.bg }}"><span style="width:15px;height:15px;border-radius:50%;background:{{ r.b.fg }};color:#fff;font-size:10px;display:grid;place-items:center">{{ r.b.i }}</span>{{ r.b.l }}</span><sc-if value="{{ r.canc }}"><span style="font-size:11px;color:#6E635B">{{ r.mot }}</span></sc-if></div>
+        <sc-if value="{{ canEdit }}"><div style="padding:12px 14px;border-top:1px solid #EFE8DD;display:flex;gap:10px;align-items:center"><a href="Impressos%20A4.dc.html#recibo" style="font-size:13px;font-weight:700">Imprimir</a><sc-if value="{{ r.ativo }}"><button onClick="{{ r.cancel }}" style="all:unset;cursor:pointer;font-size:13px;font-weight:700;color:#B0263A">Cancelar</button></sc-if></div></sc-if>
+      </div></sc-for>
+    </div>
+    <div style="padding:10px 14px;border-top:1px solid #EFE8DD;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#6E635B;flex-wrap:wrap;gap:8px"><span>{{ rows.length }} recibos · total emitido {{ totalEmit }}</span><span>Numeração sequencial: números cancelados não são reaproveitados.</span></div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ v.emitir }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+  <div style="display:flex;flex-direction:column;gap:4px"><button onClick="{{ goLista }}" style="all:unset;cursor:pointer;font-size:13px;font-weight:700;color:#A04A2A">‹ Recibos</button><h1 style="margin:0;font-family:Jost,sans-serif;font-weight:500;font-size:28px">Emitir recibo nº {{ nextN }}</h1></div>
+  <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start">
+    <div style="flex:1 1 340px;min-width:0;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;padding:3px;border-radius:10px;background:#EFE8DD;gap:3px">
+        <button onClick="{{ modoOrc }}" style="flex:1;height:44px;border-radius:8px;border:none;background:{{ m.orcBg }};font-weight:800;font-size:14px;cursor:pointer;color:#2B2421">De um orçamento</button>
+        <button onClick="{{ modoAv }}" style="flex:1;height:44px;border-radius:8px;border:none;background:{{ m.avBg }};font-weight:800;font-size:14px;cursor:pointer;color:#2B2421">Avulso</button>
+      </div>
+      <sc-if value="{{ m.orc }}">
+        <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:700">Orçamento aprovado</span><select value="{{ orc }}" onChange="{{ onOrc }}" style="height:46px;border:1px solid #D9CFC1;border-radius:8px;padding:0 10px;font-size:15px;background:#fff"><sc-for list="{{ orcOpts }}" as="o"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></label>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+          <div style="padding:10px 12px;border-radius:10px;background:#fff;border:1px solid #E5DDD1;display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:#6E635B;font-weight:600">Total</span><b style="font-size:15px">{{ o.total }}</b></div>
+          <div style="padding:10px 12px;border-radius:10px;background:#fff;border:1px solid #E5DDD1;display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:#6E635B;font-weight:600">Já pago</span><b style="font-size:15px;color:#2E6E47">{{ o.pago }}</b></div>
+          <div style="padding:10px 12px;border-radius:10px;background:#2B2421;color:#fff;display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:#E6DCD0;font-weight:600">Saldo</span><b style="font-size:15px">{{ o.saldo }}</b></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:700">Tipo</span><div style="display:flex;gap:6px"><sc-for list="{{ tipos }}" as="t"><button onClick="{{ t.on }}" style="flex:1;height:44px;border-radius:8px;border:1px solid {{ t.bd }};background:{{ t.bg }};color:{{ t.fg }};font-weight:800;font-size:14px;cursor:pointer">{{ t.l }}</button></sc-for></div></div>
+      </sc-if>
+      <sc-if value="{{ m.av }}">
+        <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:700">Recebi de</span><input value="{{ avNome }}" onChange="{{ onAvNome }}" placeholder="Nome de quem pagou" style="height:46px;border:1px solid #D9CFC1;border-radius:8px;padding:0 12px;font-size:15px"></label>
+        <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:700">Referente a</span><input value="{{ avRef }}" onChange="{{ onAvRef }}" placeholder="Ex.: conserto de varão" style="height:46px;border:1px solid #D9CFC1;border-radius:8px;padding:0 12px;font-size:15px"></label>
+      </sc-if>
+      <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:700">Valor recebido</span><div style="display:flex;align-items:center;height:52px;border:1px solid {{ valBd }};border-radius:8px;padding:0 12px;gap:6px;background:#fff"><span style="font-size:16px;color:#6E635B;font-weight:700">R$</span><input value="{{ val }}" onChange="{{ onVal }}" inputMode="decimal" style="flex:1;min-width:0;border:none;outline:none;font-size:22px;font-weight:800"></div><span style="font-size:13px;color:{{ valMsgFg }};font-weight:600">{{ valMsg }}</span></label>
+      <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:700">Valor por extenso <span style="font-weight:500;color:#6E635B">· preenchido automaticamente</span></span><div style="min-height:46px;padding:12px;border-radius:8px;background:#FAF7F2;font-size:14px;font-style:italic">{{ extenso }}</div></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">
+        <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:700">Forma de pagamento</span><select value="{{ forma }}" onChange="{{ onForma }}" style="height:46px;border:1px solid #D9CFC1;border-radius:8px;padding:0 10px;font-size:15px;background:#fff"><option>PIX</option><option>Dinheiro</option><option>Cartão</option><option>Transferência</option></select></label>
+        <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:700">Data</span><input value="{{ data }}" onChange="{{ onData }}" style="height:46px;border:1px solid #D9CFC1;border-radius:8px;padding:0 12px;font-size:15px"></label>
+      </div>
+      <label style="display:flex;gap:10px;align-items:center;font-size:14px;min-height:44px"><input type="checkbox" checked="{{ vias }}" onChange="{{ onVias }}" style="width:20px;height:20px;accent-color:#A04A2A">Imprimir em duas vias (cliente e empresa)</label>
+      <button onClick="{{ emitir }}" style="height:52px;border-radius:10px;border:none;background:#A04A2A;color:#fff;font-weight:800;font-size:16px;cursor:pointer;opacity:{{ emOp }}">Emitir recibo de {{ valFmt }}</button>
+    </div>
+    <div style="flex:1 1 340px;min-width:0;display:flex;flex-direction:column;gap:8px">
+      <span style="font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6E635B">Prévia · meia folha A4</span>
+      <div style="background:#fff;border:1px solid #E5DDD1;border-radius:6px;padding:22px;display:flex;flex-direction:column;gap:14px;box-shadow:0 4px 14px rgba(43,36,33,.06)">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid #E5DDD1;padding-bottom:12px">
+          <div style="display:flex;align-items:center;gap:10px"><div style="width:44px;height:44px;border-radius:50%;background-image:url('assets/logo-cristinas.png');background-size:66.7px auto;background-position:-11.4px -3px;flex:none"></div><div style="display:flex;flex-direction:column"><span style="font-family:Jost,sans-serif;font-size:17px;font-weight:400">Cristina's Decorações</span><span style="font-size:10px;color:#6E635B">CNPJ 12.345.678/0001-90 · (19) 99812-4470</span></div></div>
+          <div style="text-align:right;display:flex;flex-direction:column"><b style="font-size:13px;letter-spacing:.12em">RECIBO Nº {{ nextN }}</b><b style="font-size:20px">{{ valFmt }}</b></div>
+        </div>
+        <div style="font-size:14px;line-height:1.7;text-wrap:pretty">Recebi de <b>{{ pagador }}</b> a importância de <b>{{ extenso }}</b>, referente {{ refTxt }}.</div>
+        <div style="font-size:13px;color:#4A403A">Forma de pagamento: {{ forma }}</div>
+        <div style="font-size:14px">Campinas, {{ dataLonga }}.</div>
+        <div style="margin-top:18px;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:240px;border-top:1px solid #2B2421"></div><span style="font-size:12px">Cristina de Souza Martins · Cristina's Decorações</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ cOpen }}">
+  <div style="position:fixed;inset:0;z-index:50;background:rgba(43,36,33,.45);display:grid;place-items:center;padding:20px">
+    <div style="width:460px;max-width:100%;background:#fff;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:14px">
+      <div style="font-family:Jost,sans-serif;font-size:22px;font-weight:500">Cancelar o recibo nº {{ cRec.n }}?</div>
+      <div style="font-size:14px;color:#4A403A;text-wrap:pretty">{{ cRec.cli }} · {{ cRec.v }}. O recibo continua na lista, marcado como cancelado, e o número {{ cRec.n }} não será reaproveitado. O valor volta para o saldo do orçamento.</div>
+      <textarea value="{{ cMot }}" onChange="{{ onCMot }}" rows="2" placeholder="Motivo do cancelamento (obrigatório)" style="border:1px solid #D9CFC1;border-radius:8px;padding:10px 12px;font-size:14px"></textarea>
+      <div style="display:flex;justify-content:flex-end;gap:10px"><button onClick="{{ closeC }}" style="height:40px;padding:0 14px;border-radius:8px;border:1px solid #D9CFC1;background:#fff;font-weight:600;font-size:14px;cursor:pointer">Voltar</button><button onClick="{{ confirmC }}" style="height:40px;padding:0 16px;border-radius:8px;border:none;background:#B0263A;color:#fff;font-weight:700;font-size:14px;cursor:pointer;opacity:{{ cOp }}">Cancelar recibo</button></div>
+    </div>
+  </div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;view&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;lista&quot;,&quot;emitir&quot;],&quot;default&quot;:&quot;lista&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;readOnly&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onNavigate&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(r:string)=&gt;void&quot;},&quot;toast&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(m:string)=&gt;void&quot;}}">
+const brl=n=>'R$ '+n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const num=s=>parseFloat(String(s).replace(/\./g,'').replace(',','.'))||0;
+const U=['','um','dois','três','quatro','cinco','seis','sete','oito','nove','dez','onze','doze','treze','catorze','quinze','dezesseis','dezessete','dezoito','dezenove'],D=['','','vinte','trinta','quarenta','cinquenta','sessenta','setenta','oitenta','noventa'],C=['','cento','duzentos','trezentos','quatrocentos','quinhentos','seiscentos','setecentos','oitocentos','novecentos'];
+const c999=n=>{if(n===100)return'cem';const c=Math.floor(n/100),r=n%100,p=[];if(c)p.push(C[c]);if(r)p.push(r<20?U[r]:D[Math.floor(r/10)]+(r%10?' e '+U[r%10]:''));return p.join(' e ')};
+const conn=n=>n<100||n%100===0?' e ':' ';
+function inteiro(n){const mi=Math.floor(n/1e6),mil=Math.floor(n%1e6/1000),r=n%1000;let s='';if(mi)s=mi===1?'um milhão':c999(mi)+' milhões';if(mil){const t=mil===1?'mil':c999(mil)+' mil';s=s?s+conn(mil)+t:t}if(r){s=s?s+conn(r)+c999(r):c999(r)}return s}
+function extenso(v){if(!v)return'zero real';const re=Math.floor(v+1e-9),ce=Math.round((v-re)*100);let s='';if(re){s=inteiro(re);s+=(re%1e6===0&&re>=1e6?' de':'')+(re===1?' real':' reais')}if(ce){s+=(s?' e ':'')+c999(ce)+(ce===1?' centavo':' centavos')}return s}
+const MES=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+const longa=d=>{const[a,b,c]=d.split('/');return (+a)+' de '+(MES[+b-1]||'')+' de '+c};
+const ORCS={'0118':{cli:'Mariana Couto',total:3277.65,pago:1500,desc:'cortinas da sala e do quarto e persiana do escritório'},'0114':{cli:'Helena Carvalho',total:5480,pago:0,desc:'cortinas da sala e da cozinha'},'0112':{cli:'Luciana Barros',total:12650,pago:9325,desc:'cortinas e persianas da casa'}};
+const TIPO={sinal:'ao sinal',parcela:'à parcela',quitacao:'à quitação'};
+const INIT=[['0045','07/02/2026','Luciana Barros','Parcela','0112',3000,'Cartão'],['0044','05/02/2026','Clínica Viver Bem','Quitação','0117',4475,'Transferência'],['0043','03/02/2026','Rita Gomes','Avulso · conserto de varão','—',150,'Dinheiro'],['0042','30/01/2026','Mariana Couto','Sinal','0118',1500,'PIX'],['0041','28/01/2026','Helena Carvalho','Sinal','0114',2740,'PIX','Valor digitado errado; reemitir após confirmação do PIX.'],['0040','23/01/2026','Clínica Viver Bem','Sinal','0117',4475,'PIX'],['0039','19/01/2026','Luciana Barros','Parcela','0112',3000,'Cartão'],['0038','16/12/2025','Luciana Barros','Sinal','0112',6325,'Transferência']].map(r=>({n:r[0],data:r[1],cli:r[2],tipo:r[3],orc:r[4],v:r[5],forma:r[6],st:r[7]?'canc':'ok',mot:r[7]||''}));
+class Component extends DCLogic {
+  state={recs:INIT,q:'',sf:'Todos',ff:'',modo:'orc',orc:'0118',tipo:'quitacao',val:'1.777,65',forma:'PIX',data:'09/02/2026',vias:true,avNome:'',avRef:'',cancel:null,cMot:'',view:'lista'};
+  toast(m){this.props.toast&&this.props.toast(m)}
+  nav(v){this.props.onNavigate?this.props.onNavigate('rec.'+v):this.setState({view:v})}
+  setOrc(o,tipo){const O=ORCS[o],saldo=O.total-O.pago;const v=tipo==='quitacao'?saldo:tipo==='sinal'?O.total/2:Math.min(saldo,1000);this.setState({orc:o,tipo,val:v.toLocaleString('pt-BR',{minimumFractionDigits:2})})}
+  renderVals(){const s=this.state,view=this.props.view??s.view,canEdit=!this.props.readOnly;
+    const tab=on=>({bd:on?'#2B2421':'#D9CFC1',bg:on?'#2B2421':'#fff',fg:on?'#fff':'#2B2421'});
+    const rows=s.recs.filter(r=>(s.sf==='Todos'||(s.sf==='Emitido'?r.st==='ok':r.st==='canc'))&&(!s.ff||r.forma===s.ff)&&(!s.q||(r.n+r.cli+r.orc).toLowerCase().includes(s.q.toLowerCase()))).map(r=>({...r,v:brl(r.v),orc:r.orc==='—'?'Avulso':'Orçamento '+r.orc,fg:r.st==='canc'?'#8A7F76':'#2B2421',deco:r.st==='canc'?'line-through':'none',b:r.st==='canc'?{fg:'#B0263A',bg:'#FBE5E7',i:'✕',l:'Cancelado'}:{fg:'#2E6E47',bg:'#E3F0E7',i:'✓',l:'Emitido'},canc:r.st==='canc',ativo:r.st==='ok',cancel:()=>this.setState({cancel:r.n,cMot:''})}));
+    const nextN=String(Math.max(...s.recs.map(r=>+r.n))+1).padStart(4,'0');
+    const O=ORCS[s.orc],saldo=O.total-O.pago,val=num(s.val);const over=s.modo==='orc'&&val>saldo+0.001;const okV=val>0&&!over&&(s.modo==='orc'||s.avNome.trim());
+    const cR=s.recs.find(r=>r.n===s.cancel);
+    return{v:{lista:view==='lista',emitir:view==='emitir'},canEdit,actW:canEdit?'150px':'',head:[{l:'Nº',a:'left'},{l:'Data',a:'left'},{l:'Cliente',a:'left'},{l:'Orçamento',a:'left'},{l:'Valor',a:'right'},{l:'Forma',a:'left'},{l:'Status',a:'left'},...(canEdit?[{l:'',a:'left'}]:[])],rows,
+      totalEmit:brl(s.recs.filter(r=>r.st==='ok').reduce((a,r)=>a+r.v,0)),q:s.q,onQ:e=>this.setState({q:e.target.value}),ff:s.ff,onFf:e=>this.setState({ff:e.target.value}),
+      sfOpts:['Todos','Emitido','Cancelado'].map(l=>({l,on:()=>this.setState({sf:l}),...tab(s.sf===l)})),exportar:()=>this.toast('recibos_fev-2026.xlsx baixado'),goEmitir:()=>this.nav('emitir'),goLista:()=>this.nav('lista'),
+      nextN,m:{orc:s.modo==='orc',av:s.modo==='av',orcBg:s.modo==='orc'?'#fff':'transparent',avBg:s.modo==='av'?'#fff':'transparent'},modoOrc:()=>this.setState({modo:'orc'}),modoAv:()=>this.setState({modo:'av',val:'150,00'}),
+      orc:s.orc,onOrc:e=>this.setOrc(e.target.value,s.tipo),orcOpts:Object.entries(ORCS).map(([k,o])=>({v:k,l:`Nº ${k} · ${o.cli} · saldo ${brl(o.total-o.pago)}`})),o:{total:brl(O.total),pago:brl(O.pago),saldo:brl(saldo)},
+      tipos:[['sinal','Sinal'],['parcela','Parcela'],['quitacao','Quitação']].map(([k,l])=>({l,on:()=>this.setOrc(s.orc,k),...tab(s.tipo===k)})),
+      val:s.val,onVal:e=>this.setState({val:e.target.value}),valFmt:brl(val),valBd:over?'#B0263A':'#D9CFC1',valMsg:over?'Valor maior que o saldo do orçamento ('+brl(saldo)+').':s.modo==='orc'?(Math.abs(val-saldo)<.01?'✓ Quita o orçamento.':'Saldo após este recibo: '+brl(Math.max(0,saldo-val))):'',valMsgFg:over?'#B0263A':'#2E6E47',
+      extenso:extenso(val),forma:s.forma,onForma:e=>this.setState({forma:e.target.value}),data:s.data,onData:e=>this.setState({data:e.target.value}),dataLonga:longa(s.data),vias:s.vias,onVias:()=>this.setState({vias:!s.vias}),
+      avNome:s.avNome,onAvNome:e=>this.setState({avNome:e.target.value}),avRef:s.avRef,onAvRef:e=>this.setState({avRef:e.target.value}),
+      pagador:s.modo==='orc'?O.cli:(s.avNome||'—'),refTxt:s.modo==='orc'?`${TIPO[s.tipo]} do orçamento nº ${s.orc} (${O.desc})`:`a ${s.avRef||'—'}`,
+      emOp:okV?1:.45,emitir:()=>{if(!okV)return;const r={n:nextN,data:s.data,cli:s.modo==='orc'?O.cli:s.avNome,tipo:s.modo==='orc'?{sinal:'Sinal',parcela:'Parcela',quitacao:'Quitação'}[s.tipo]:'Avulso · '+s.avRef,orc:s.modo==='orc'?s.orc:'—',v:val,forma:s.forma,st:'ok',mot:''};if(s.modo==='orc')ORCS[s.orc].pago+=val;this.setState(x=>({recs:[r,...x.recs]}));this.toast('Recibo nº '+nextN+' emitido');this.nav('lista')},
+      cOpen:!!cR,cRec:cR?{n:cR.n,cli:cR.cli,v:brl(cR.v)}:{},cMot:s.cMot,onCMot:e=>this.setState({cMot:e.target.value}),cOp:s.cMot.trim()?1:.45,closeC:()=>this.setState({cancel:null}),confirmC:()=>{if(!s.cMot.trim())return;this.setState(x=>({recs:x.recs.map(r=>r.n===s.cancel?{...r,st:'canc',mot:s.cMot}:r),cancel:null}));this.toast('Recibo nº '+s.cancel+' cancelado')}};
+  }
+}
+</script>
+</body>
+</html>

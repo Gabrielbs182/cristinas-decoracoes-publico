@@ -1,0 +1,20 @@
+# Só o que o build do app precisa. Dados reais, segredos e ferramentas de teste nunca entram na imagem.
+.git
+node_modules
+.next
+dados
+.ambiente-teste
+.env*
+!.env.example
+*.zip
+docs
+tests
+scripts
+supabase/*
+!supabase/templates
+deploy
+test-results
+playwright-report
+playwright.config.ts
+vitest.config.mts
+tsconfig.tsbuildinfo

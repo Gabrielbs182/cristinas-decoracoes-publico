@@ -1,0 +1,53 @@
+# Ajustes da Cristina's sobre o compose oficial do Supabase (o preparar.sh copia para docker/ e o põe no
+# COMPOSE_FILE). Nada do Supabase fica exposto à internet: o app fala com ele pela rede interna do Docker e o
+# Studio é aberto por túnel SSH (ver deploy/README.md).
+#
+# Feito para 4 GB (KVM 1): fica desligado o que o sistema não usa. Tempo real, funções e transformação de
+# imagem não são usados; o pooler (supavisor) também não (o app fala com o PostgREST, e os scripts falam direto com
+# o Postgres no 127.0.0.1). O Studio e o postgres-meta sobem só quando precisar:
+#   docker compose --profile painel up -d studio meta     # e depois: docker compose stop studio meta
+services:
+  api-gw:
+    # O gateway esperava o Studio subir; sem o Studio no dia a dia, ele não espera mais nada.
+    depends_on: !reset {}
+    ports: !override
+      - "127.0.0.1:${PORTA_API:-8000}:8000/tcp"
+  db:
+    # Só na própria VPS (migrações, scripts); o pooler fica desligado.
+    ports:
+      - "127.0.0.1:${PORTA_BANCO:-5432}:5432"
+  storage:
+    depends_on: !override
+      db:
+        condition: service_healthy
+      rest:
+        condition: service_started
+    environment:
+      ENABLE_IMAGE_TRANSFORMATION: "false"
+  auth:
+    environment:
+      # Link de acesso mandado pelo WhatsApp vale 24 h (igual ao otp_expiry do config.toml local).
+      GOTRUE_MAILER_OTP_EXP: "86400"
+      # Mesma regra de senha do config.toml local: mínimo 8, com letras e números.
+      GOTRUE_PASSWORD_MIN_LENGTH: "8"
+      GOTRUE_PASSWORD_REQUIRED_CHARACTERS: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ:0123456789"
+      # "Esqueci minha senha" por e-mail: o modelo vem do próprio app (o Auth só aceita modelo por http), e o link
+      # dele leva para /auth/confirmar com o token_hash. O envio (Gmail da loja) vem dos SMTP_* do .env.
+      GOTRUE_MAILER_TEMPLATES_RECOVERY: "http://app:3000/modelos/recuperar-senha"
+      GOTRUE_MAILER_SUBJECTS_RECOVERY: "Crie uma senha nova · Cristina's Decorações"
+      # Verificação em duas etapas (opcional, cada um liga em Minha conta / Meu perfil).
+      GOTRUE_MFA_TOTP_ENROLL_ENABLED: "true"
+      GOTRUE_MFA_TOTP_VERIFY_ENABLED: "true"
+  # Desligados no dia a dia (perfil: só sobem se pedidos pelo nome do perfil).
+  studio:
+    profiles: ["painel"]
+  meta:
+    profiles: ["painel"]
+  realtime:
+    profiles: ["desligado"]
+  functions:
+    profiles: ["desligado"]
+  imgproxy:
+    profiles: ["desligado"]
+  supavisor:
+    profiles: ["desligado"]

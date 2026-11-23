@@ -1,0 +1,51 @@
+# Produção na VPS: o app (Next) e o Caddy (HTTPS automático, Let's Encrypt). O Supabase roda no compose oficial
+# (deploy/supabase/docker, projeto "supabase"); o app entra na rede dele e o chama por http://kong:8000.
+# Só o Caddy fica exposto à internet (80/443). Ver deploy/README.md.
+#
+# A imagem do app vem pronta da CI (ghcr.io), na versão de VERSAO: a VPS não monta nada (o KVM 1 tem 4 GB).
+#   docker compose -f deploy/docker-compose.yml --env-file deploy/.env pull
+#   docker compose -f deploy/docker-compose.yml --env-file deploy/.env up -d
+# Nome do projeto diferente de "cristinas": o Supabase CLI marca os containers do banco local com esse nome, e um
+# "compose down" aqui, numa máquina de desenvolvimento, mexeria neles.
+name: cristinas-producao
+
+services:
+  app:
+    image: ghcr.io/gabrielbs182/cristinas-decoracoes:${VERSAO:-latest}
+    restart: unless-stopped
+    environment:
+      # Lidos quando o container sobe (a imagem não leva endereço nem chave). Só o servidor usa o Supabase.
+      NEXT_PUBLIC_SUPABASE_URL: ${SUPABASE_URL_INTERNA}
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${SUPABASE_ANON_KEY}
+      APP_URL: ${APP_URL}
+      SUPABASE_SECRET_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+      USUARIOS_DOMINIO_INTERNO: ${USUARIOS_DOMINIO_INTERNO}
+    networks: [supabase]
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "5" }
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on: [app]
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      DOMINIO: ${DOMINIO}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_dados:/data
+      - caddy_config:/config
+    networks: [supabase]
+
+networks:
+  supabase:
+    name: supabase_default
+    external: true
+
+volumes:
+  caddy_dados:
+  caddy_config:

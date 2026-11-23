@@ -1,0 +1,11 @@
+<!-- E-mail de "Esqueci minha senha" (modelo do Auth do Supabase). O link vai para a tela de criar senha do próprio
+     sistema, com o token_hash (validado no servidor ao salvar a senha): o link padrão do Supabase levaria ao Auth, que
+     na VPS não fica na internet. Local: config.toml; VPS: servido pelo app em /modelos/recuperar-senha. -->
+<div style="font-family: Arial, sans-serif; font-size: 15px; color: #2b2622; max-width: 520px">
+  <h2 style="font-weight: normal">Criar uma senha nova</h2>
+  <p>Recebemos um pedido para criar uma senha nova para o seu acesso ao sistema da Cristina's Decorações.</p>
+  <p>
+    <a href="{{ .SiteURL }}/auth/confirmar?token_hash={{ .TokenHash }}&type=recovery" style="display: inline-block; padding: 12px 20px; background: #a4502f; color: #ffffff; border-radius: 8px; text-decoration: none; font-weight: bold">Criar minha senha nova</a>
+  </p>
+  <p style="color: #6b625b; font-size: 13px">O link vale por 24 horas e funciona uma vez só. Se não foi você que pediu, ignore este e-mail: a sua senha atual continua valendo.</p>
+</div>

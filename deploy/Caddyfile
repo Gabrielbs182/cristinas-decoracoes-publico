@@ -1,0 +1,7 @@
+# HTTPS automático para o domínio do sistema. O Caddy põe o IP de quem acessa no X-Forwarded-For (sem confiar no
+# que o navegador mandar), e é esse IP que o limite de tentativas do login usa (lib/limite.ts).
+# Os cabeçalhos de segurança (CSP, HSTS…) vêm do próprio app (next.config.ts).
+{$DOMINIO} {
+	encode zstd gzip
+	reverse_proxy app:3000
+}

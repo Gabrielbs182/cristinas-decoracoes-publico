@@ -1,0 +1,43 @@
+# dependências
+node_modules/
+
+# next
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# ambiente (segredos e chaves locais)
+.env
+.env.*
+!.env.example
+
+# supabase local
+supabase/.branches/
+supabase/.temp/
+
+# dados reais da catraca e saídas geradas (dados pessoais das funcionárias)
+dados/
+*.GLog.txt
+
+# export bruto do Claude Design (o conteúdo extraído fica em docs/design/prototipo)
+*.zip
+
+# testes / ferramentas
+coverage/
+test-results/
+playwright-report/
+
+# SO / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Ambiente de teste isolado (gerado por scripts/ambiente-teste.ts)
+.ambiente-teste/
+
+# Implantação (segredos gerados na VPS e o Supabase oficial baixado pelo deploy/supabase/preparar.sh)
+deploy/.env
+deploy/supabase/docker/
+deploy/backup/*.log

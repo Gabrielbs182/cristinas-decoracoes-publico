@@ -1,0 +1,74 @@
+# Testes a cada mudança: tipos, lint, unidade, banco (RLS) e, no navegador, a regressão e o smoke de telas.
+# Roda com o cadastro de EXEMPLO (dados/ não vai para o git) e sem o histórico do sistema antigo; os testes que
+# precisam de semana fechada do histórico avisam e pulam só aquela conferência.
+name: Testes
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: testes-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  testes:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npx eslint
+      - name: Supabase de teste (573xx), zerado com o cadastro de exemplo
+        run: npx tsx scripts/ambiente-teste.ts zerar
+      - name: Unidade e banco
+        run: npm test
+      - run: npx playwright install --with-deps chromium
+      - name: Regressão e smoke no navegador
+        run: npx playwright test
+        env:
+          E2E_SEM_ZERAR: "1"
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: relatorio-playwright
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+
+  # A cada versão (tag vX.Y.Z), com os testes verdes: monta a imagem do app e publica no ghcr.io. A VPS só baixa
+  # (no KVM 1, de 4 GB, montar lá dentro disputaria memória com o banco). A imagem não leva chave nem endereço.
+  imagem:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: testes
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-buildx-action@v4
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/gabrielbs182/cristinas-decoracoes:${{ github.ref_name }}
+            ghcr.io/gabrielbs182/cristinas-decoracoes:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

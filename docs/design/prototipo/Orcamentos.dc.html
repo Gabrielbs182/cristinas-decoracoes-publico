@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>body{margin:0;font-family:Manrope,system-ui,sans-serif;color:#2B2421;background:#F6F2EB}a{color:#A04A2A}a:hover{color:#7E3820}button,input,select,textarea{font-family:inherit;font-variant-numeric:tabular-nums}</style>
+</helmet>
+<div style="font-family:Manrope,system-ui,sans-serif;color:#2B2421;font-variant-numeric:tabular-nums;display:flex;flex-direction:column;gap:18px">
+
+<sc-if value="{{ v.lista }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap">
+    <div style="display:flex;flex-direction:column;gap:4px"><div style="font-size:13px;font-weight:600;color:#6E635B">Vendas</div><h1 style="margin:0;font-family:Jost,sans-serif;font-weight:500;font-size:30px">Orçamentos</h1></div>
+    <button onClick="{{ novo }}" style="height:40px;padding:0 16px;border-radius:8px;border:none;background:#A04A2A;color:#fff;font-weight:700;font-size:14px;cursor:pointer">+ Novo orçamento</button>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <input value="{{ q }}" onChange="{{ onQ }}" placeholder="Buscar por número ou cliente" style="height:38px;width:280px;border:1px solid #D9CFC1;border-radius:8px;padding:0 12px;font-size:14px;background:#fff">
+    <sc-for list="{{ stOpts }}" as="o"><button onClick="{{ o.on }}" style="height:36px;padding:0 12px;border-radius:18px;border:1px solid {{ o.bd }};background:{{ o.bg }};color:{{ o.fg }};font-weight:700;font-size:13px;cursor:pointer">{{ o.l }}</button></sc-for>
+    <select style="height:38px;border:1px solid #D9CFC1;border-radius:8px;padding:0 10px;font-size:13px;background:#fff;margin-left:auto"><option>Últimos 90 dias</option><option>Este mês</option><option>Mês passado</option><option>Este ano</option></select>
+  </div>
+  <div style="background:#fff;border:1px solid #E5DDD1;border-radius:12px;overflow:auto">
+    <div style="display:grid;grid-template-columns:80px minmax(200px,2fr) 110px 110px 130px 140px 150px;min-width:min-content">
+      <sc-for list="{{ lHead }}" as="h"><div style="padding:10px 14px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#6E635B;background:#FAF7F2;text-align:{{ h.a }}">{{ h.l }}</div></sc-for>
+      <sc-for list="{{ lista }}" as="o" hint-placeholder-count="8"><div onClick="{{ o.open }}" style="display:contents;cursor:pointer">
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD;font-weight:800;font-size:14px;cursor:pointer">{{ o.n }}</div>
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD;font-size:14px;display:flex;flex-direction:column;gap:1px;cursor:pointer"><b>{{ o.cli }}</b><span style="font-size:12px;color:#6E635B">{{ o.amb }}</span></div>
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD;font-size:14px">{{ o.data }}</div>
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD;font-size:14px;color:{{ o.vfg }};font-weight:{{ o.vfw }}">{{ o.val }}</div>
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD;font-size:14px;font-weight:700;text-align:right">{{ o.valor }}</div>
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD"><span style="display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px 0 4px;border-radius:11px;font-size:12px;font-weight:700;color:{{ o.b.fg }};background:{{ o.b.bg }}"><span style="width:15px;height:15px;border-radius:50%;background:{{ o.b.fg }};color:#fff;font-size:10px;display:grid;place-items:center">{{ o.b.i }}</span>{{ o.b.l }}</span></div>
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD"><sc-if value="{{ o.hasPg }}"><span style="display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px 0 4px;border-radius:11px;font-size:12px;font-weight:700;color:{{ o.pg.fg }};background:{{ o.pg.bg }}"><span style="width:15px;height:15px;border-radius:50%;background:{{ o.pg.fg }};color:#fff;font-size:10px;display:grid;place-items:center">{{ o.pg.i }}</span>{{ o.pg.l }}</span></sc-if></div>
+      </div></sc-for>
+    </div>
+    <sc-if value="{{ listaVazia }}"><div style="padding:32px;text-align:center;color:#6E635B;font-size:14px">Nenhum orçamento encontrado com esses filtros.</div></sc-if>
+    <div style="padding:10px 14px;border-top:1px solid #EFE8DD;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#6E635B"><span>{{ listaN }} de 46 orçamentos</span><div style="display:flex;gap:6px"><button style="height:32px;padding:0 10px;border-radius:6px;border:1px solid #D9CFC1;background:#fff;font-size:13px;cursor:pointer">‹ Anterior</button><button style="height:32px;padding:0 10px;border-radius:6px;border:1px solid #D9CFC1;background:#fff;font-size:13px;cursor:pointer">Próxima ›</button></div></div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ v.editor }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <button onClick="{{ goLista }}" style="all:unset;cursor:pointer;font-size:13px;font-weight:700;color:#A04A2A">‹ Orçamentos</button>
+      <div style="display:flex;align-items:center;gap:12px"><h1 style="margin:0;font-family:Jost,sans-serif;font-weight:500;font-size:30px">Orçamento nº 0118</h1>
+        <span style="display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px 0 4px;border-radius:11px;font-size:12px;font-weight:700;color:#5E554E;background:#EEE9E2"><span style="width:15px;height:15px;border-radius:50%;background:#5E554E;color:#fff;font-size:10px;display:grid;place-items:center">○</span>Rascunho</span>
+        <span style="font-size:13px;color:#6E635B">{{ savedTxt }}</span></div>
+    </div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start">
+    <div style="flex:1 1 640px;display:flex;flex-direction:column;gap:16px;min-width:0">
+      <div style="background:#fff;border:1px solid #E5DDD1;border-radius:12px;padding:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px">
+        <label style="display:flex;flex-direction:column;gap:6px;grid-column:1/-1"><span style="font-size:13px;font-weight:700">Cliente</span>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><div style="flex:1;min-width:220px;min-height:40px;border:1px solid #D9CFC1;border-radius:8px;padding:0 12px;display:flex;align-items:center;gap:10px;font-size:14px"><b>Mariana Couto</b><span style="color:#6E635B">(19) 99134-2280 · Cambuí</span></div><button onClick="{{ quickCli }}" style="height:40px;padding:0 12px;border-radius:8px;border:1px solid #D9CFC1;background:#fff;font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap">+ Cadastro rápido</button></div></label>
+        <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:700">Endereço da obra</span><select style="height:40px;border:1px solid #D9CFC1;border-radius:8px;padding:0 10px;font-size:14px;background:#fff"><option>Obra · R. das Hortênsias, 240 — Alphaville</option><option>Residência · R. Cel. Quirino, 1100 — Cambuí</option></select></label>
+        <sc-for list="{{ headF }}" as="f"><label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:700">{{ f.l }}</span><input value="{{ f.v }}" style="height:40px;border:1px solid #D9CFC1;border-radius:8px;padding:0 12px;font-size:14px"></label></sc-for>
+        <label style="display:flex;flex-direction:column;gap:6px;grid-column:1/-1"><span style="font-size:13px;font-weight:700">Condições de pagamento</span><select value="{{ cond }}" onChange="{{ onCond }}" style="height:40px;border:1px solid #D9CFC1;border-radius:8px;padding:0 10px;font-size:14px;background:#fff"><option>50% de sinal e 50% na instalação</option><option>À vista no PIX</option><option>Sinal de 30% e saldo em 3x no cartão</option></select></label>
+      </div>
+
+      <sc-for list="{{ ambs }}" as="a" hint-placeholder-count="2">
+        <div style="background:#fff;border:1px solid #E5DDD1;border-radius:12px;overflow:hidden">
+          <div style="padding:12px 16px;background:#FAF7F2;border-bottom:1px solid #EFE8DD;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <input value="{{ a.nome }}" onChange="{{ a.onNome }}" aria-label="Nome do ambiente" style="font-family:Jost,sans-serif;font-size:20px;font-weight:500;border:1px solid transparent;border-radius:6px;padding:2px 6px;background:transparent;width:260px;color:#2B2421" style-hover="border-color:#D9CFC1">
+            <span style="font-size:13px;color:#6E635B">{{ a.nItens }}</span>
+            <span style="flex:1"></span>
+            <b style="font-size:16px">{{ a.sub }}</b>
+            <button onClick="{{ a.dup }}" style="height:32px;padding:0 10px;border-radius:6px;border:1px solid #D9CFC1;background:#fff;font-size:12px;font-weight:700;cursor:pointer">Duplicar ambiente</button>
+            <button onClick="{{ a.del }}" aria-label="Remover ambiente" style="height:32px;padding:0 10px;border-radius:6px;border:1px solid #D9CFC1;background:#fff;font-size:12px;font-weight:700;cursor:pointer;color:#B0263A">Remover</button>
+          </div>
+          <sc-for list="{{ a.items }}" as="it">
+            <div style="padding:14px 16px;border-bottom:1px solid #EFE8DD;display:flex;flex-direction:column;gap:12px">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">
+                <label style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;font-weight:700;color:#6E635B">Produto</span><select value="{{ it.tipo }}" onChange="{{ it.onTipo }}" style="height:38px;border:1px solid #D9CFC1;border-radius:8px;padding:0 8px;font-size:14px;background:#fff"><option value="cortina">Cortina de tecido</option><option value="persiana">Persiana</option><option value="trilho">Trilho / varão</option><option value="acessorio">Acessório</option><option value="servico">Serviço</option></select></label>
+                <label style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;font-weight:700;color:#6E635B">Modelo</span><select value="{{ it.modelo }}" onChange="{{ it.onModelo }}" style="height:38px;border:1px solid #D9CFC1;border-radius:8px;padding:0 8px;font-size:14px;background:#fff"><sc-for list="{{ it.mOpts }}" as="o"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></label>
+                <label style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;font-weight:700;color:#6E635B">{{ it.matL }}</span><select value="{{ it.mat }}" onChange="{{ it.onMat }}" style="height:38px;border:1px solid #D9CFC1;border-radius:8px;padding:0 8px;font-size:14px;background:#fff"><sc-for list="{{ it.matOpts }}" as="o"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></label>
+                <label style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;font-weight:700;color:#6E635B">Cor</span><input value="{{ it.cor }}" onChange="{{ it.onCor }}" style="height:38px;border:1px solid #D9CFC1;border-radius:8px;padding:0 10px;font-size:14px"></label>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap">
+                <sc-if value="{{ it.hasAcion }}"><div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;font-weight:700;color:#6E635B">Acionamento</span><div style="display:flex;padding:3px;border-radius:9px;background:#F3EEE6;gap:3px"><button onClick="{{ it.onManual }}" style="height:32px;padding:0 12px;border-radius:7px;border:none;background:{{ it.manBg }};font-weight:700;font-size:13px;cursor:pointer;color:#2B2421">Manual</button><button onClick="{{ it.onMotor }}" style="height:32px;padding:0 12px;border-radius:7px;border:none;background:{{ it.motBg }};font-weight:700;font-size:13px;cursor:pointer;color:#2B2421">Motorizado</button></div></div></sc-if>
+                <sc-if value="{{ it.hasW }}"><label style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;font-weight:700;color:#6E635B">Largura do vão</span><div style="display:flex;align-items:center;height:38px;border:1px solid #D9CFC1;border-radius:8px;padding:0 10px;gap:4px"><input value="{{ it.w }}" onChange="{{ it.onW }}" inputMode="decimal" style="width:52px;border:none;outline:none;font-size:15px;font-weight:800;text-align:right"><span style="font-size:13px;color:#6E635B">m</span></div></label></sc-if>
+                <sc-if value="{{ it.hasH }}"><span style="font-size:16px;color:#6E635B;padding-bottom:9px">×</span><label style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;font-weight:700;color:#6E635B">Altura do vão</span><div style="display:flex;align-items:center;height:38px;border:1px solid #D9CFC1;border-radius:8px;padding:0 10px;gap:4px"><input value="{{ it.h }}" onChange="{{ it.onH }}" inputMode="decimal" style="width:52px;border:none;outline:none;font-size:15px;font-weight:800;text-align:right"><span style="font-size:13px;color:#6E635B">m</span></div></label></sc-if>
+                <label style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;font-weight:700;color:#6E635B">Qtd.</span><input value="{{ it.q }}" onChange="{{ it.onQ }}" inputMode="numeric" style="width:56px;height:38px;border:1px solid #D9CFC1;border-radius:8px;padding:0 10px;font-size:15px;font-weight:800;text-align:right"></label>
+                <span style="flex:1"></span>
+                <button onClick="{{ it.dup }}" style="height:34px;padding:0 10px;border-radius:6px;border:1px solid #D9CFC1;background:#fff;font-size:12px;font-weight:700;cursor:pointer">Duplicar item</button>
+                <button onClick="{{ it.del }}" style="height:34px;padding:0 10px;border-radius:6px;border:1px solid #D9CFC1;background:#fff;font-size:12px;font-weight:700;cursor:pointer;color:#B0263A">Remover</button>
+              </div>
+              <div style="border-radius:10px;background:#FAF7F2;padding:10px 12px;display:flex;flex-direction:column;gap:4px">
+                <div style="font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#6E635B">Memória de cálculo</div>
+                <sc-for list="{{ it.lines }}" as="ln"><div style="display:grid;grid-template-columns:86px minmax(0,1fr) auto;gap:10px;font-size:13px"><b>{{ ln.l }}</b><span style="color:#4A403A">{{ ln.mem }}</span><span style="text-align:right;font-weight:700">{{ ln.v }}</span></div></sc-for>
+                <div style="display:grid;grid-template-columns:96px minmax(0,1fr) 110px;gap:10px;font-size:14px;border-top:1px solid #E5DDD1;padding-top:6px;margin-top:2px"><b>Item</b><span style="color:#4A403A">{{ it.qMem }}</span><b style="text-align:right">{{ it.tot }}</b></div>
+              </div>
+            </div>
+          </sc-for>
+          <div style="padding:10px 16px"><button onClick="{{ a.add }}" style="height:36px;padding:0 12px;border-radius:8px;border:1px dashed #CFC3B3;background:#fff;font-weight:700;font-size:13px;cursor:pointer;color:#A04A2A">+ Item neste ambiente</button></div>
+        </div>
+      </sc-for>
+      <button onClick="{{ addAmb }}" style="height:48px;border-radius:12px;border:2px dashed #CFC3B3;background:transparent;font-weight:700;font-size:14px;cursor:pointer;color:#A04A2A">+ Ambiente (Sala, Quarto, Escritório…)</button>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:700">Observações para o cliente <span style="font-weight:500;color:#6E635B">· saem no PDF</span></span><textarea rows="3" style="border:1px solid #D9CFC1;border-radius:8px;padding:10px 12px;font-size:14px;resize:vertical">Medidas conferidas na visita técnica de 05/02. Tecidos sujeitos à disponibilidade do fornecedor.</textarea></label>
+        <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:700">Observações internas <span style="font-weight:500;color:#B0263A">· não saem no PDF</span></span><textarea rows="3" style="border:1px solid #D9CFC1;border-radius:8px;padding:10px 12px;font-size:14px;resize:vertical;background:#FFFBF2">Cliente prefere instalação de manhã. Portaria exige cadastro prévio da equipe.</textarea></label>
+      </div>
+    </div>
+
+    <div style="flex:1 0 300px;max-width:360px;position:sticky;top:16px;background:#fff;border:1px solid #E5DDD1;border-radius:12px;display:flex;flex-direction:column">
+      <div style="padding:14px 16px;border-bottom:1px solid #EFE8DD;font-weight:800;font-size:15px">Resumo</div>
+      <div style="padding:12px 16px;display:flex;flex-direction:column;gap:8px;font-size:14px">
+        <sc-for list="{{ ambs }}" as="a"><div style="display:flex;justify-content:space-between;gap:8px"><span>{{ a.nome }}</span><span>{{ a.sub }}</span></div></sc-for>
+        <div style="display:flex;justify-content:space-between;border-top:1px solid #EFE8DD;padding-top:8px;font-weight:700"><span>Subtotal</span><span>{{ t.sub }}</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span>Desconto</span><div style="display:flex;gap:4px;align-items:center"><div style="display:flex;padding:2px;border-radius:7px;background:#F3EEE6"><button onClick="{{ descPct }}" style="height:28px;width:34px;border-radius:5px;border:none;background:{{ t.pctBg }};font-weight:800;font-size:12px;cursor:pointer">%</button><button onClick="{{ descBrl }}" style="height:28px;width:34px;border-radius:5px;border:none;background:{{ t.brlBg }};font-weight:800;font-size:12px;cursor:pointer">R$</button></div><input value="{{ desc }}" onChange="{{ onDesc }}" inputMode="decimal" style="width:70px;height:32px;border:1px solid #D9CFC1;border-radius:6px;padding:0 8px;font-size:14px;text-align:right"></div></div>
+        <div style="display:flex;justify-content:space-between;color:#2E6E47;font-size:13px"><span></span><span>− {{ t.desc }}</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center"><span>Taxa de deslocamento</span><input value="{{ desl }}" onChange="{{ onDesl }}" inputMode="decimal" style="width:90px;height:32px;border:1px solid #D9CFC1;border-radius:6px;padding:0 8px;font-size:14px;text-align:right"></div>
+      </div>
+      <div style="padding:14px 16px;background:#2B2421;color:#fff;display:flex;flex-direction:column;gap:2px">
+        <span style="font-size:13px;color:#E6DCD0">Total do orçamento</span><b style="font-size:30px;letter-spacing:-.01em">{{ t.total }}</b>
+        <span style="font-size:12px;color:#E6DCD0">{{ t.cond }}</span>
+      </div>
+      <div style="padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+        <button onClick="{{ enviar }}" style="height:44px;border-radius:8px;border:none;background:#A04A2A;color:#fff;font-weight:800;font-size:15px;cursor:pointer">Enviar ao cliente</button>
+        <div style="display:flex;gap:8px"><a href="Impressos%20A4.dc.html#orcamento" style="flex:1;height:40px;border-radius:8px;border:1px solid #D9CFC1;display:grid;place-items:center;font-weight:700;font-size:14px;text-decoration:none;color:#2B2421">Pré-visualizar</a><button onClick="{{ salvar }}" style="flex:1;height:40px;border-radius:8px;border:1px solid #D9CFC1;background:#fff;font-weight:700;font-size:14px;cursor:pointer">Salvar rascunho</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ v.catalogo }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px"><div style="display:flex;flex-direction:column;gap:4px"><div style="font-size:13px;font-weight:600;color:#6E635B">Vendas</div><h1 style="margin:0;font-family:Jost,sans-serif;font-weight:500;font-size:30px">Catálogo de produtos e preços</h1></div><button onClick="{{ novoProd }}" style="height:40px;padding:0 16px;border-radius:8px;border:none;background:#A04A2A;color:#fff;font-weight:700;font-size:14px;cursor:pointer">+ Produto</button></div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{ catTabs }}" as="t"><button onClick="{{ t.on }}" style="height:38px;padding:0 14px;border-radius:19px;border:1px solid {{ t.bd }};background:{{ t.bg }};color:{{ t.fg }};font-weight:700;font-size:14px;cursor:pointer">{{ t.l }}</button></sc-for></div>
+  <div style="display:flex;gap:10px;align-items:center;padding:12px 14px;border-radius:10px;background:#fff;border:1px solid #E5DDD1;font-size:14px"><b style="color:#A04A2A">Regra de cálculo</b><span>{{ cat.regra }}</span></div>
+  <div style="background:#fff;border:1px solid #E5DDD1;border-radius:12px;overflow:hidden">
+    <div style="display:grid;grid-template-columns:minmax(0,2fr) 110px 130px 130px 110px">
+      <sc-for list="{{ catHead }}" as="h"><div style="padding:10px 14px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#6E635B;background:#FAF7F2">{{ h }}</div></sc-for>
+      <sc-for list="{{ cat.rows }}" as="r"><div style="display:contents">
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD;font-weight:700;font-size:14px;color:{{ r.fg }}">{{ r.n }}</div>
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD;font-size:14px">{{ r.u }}</div>
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD;font-size:14px;font-weight:700">{{ r.p }}</div>
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD;font-size:14px">{{ r.rolo }}</div>
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD"><button onClick="{{ r.toggle }}" aria-label="Ativo" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700"><span style="width:36px;height:20px;border-radius:10px;background:{{ r.tg }};position:relative;display:block"><span style="position:absolute;top:2px;left:{{ r.knob }};width:16px;height:16px;border-radius:50%;background:#fff"></span></span>{{ r.al }}</button></div>
+      </div></sc-for>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ v.clientes }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px"><div style="display:flex;flex-direction:column;gap:4px"><div style="font-size:13px;font-weight:600;color:#6E635B">Vendas</div><h1 style="margin:0;font-family:Jost,sans-serif;font-weight:500;font-size:30px">Clientes</h1></div><button onClick="{{ quickCli }}" style="height:40px;padding:0 16px;border-radius:8px;border:none;background:#A04A2A;color:#fff;font-weight:700;font-size:14px;cursor:pointer">+ Cliente</button></div>
+  <input value="{{ cq }}" onChange="{{ onCq }}" placeholder="Buscar por nome, telefone ou bairro" style="height:40px;max-width:420px;border:1px solid #D9CFC1;border-radius:8px;padding:0 12px;font-size:14px;background:#fff">
+  <div style="background:#fff;border:1px solid #E5DDD1;border-radius:12px;overflow:hidden">
+    <div style="display:grid;grid-template-columns:minmax(0,1.6fr) 170px 160px 110px 140px">
+      <sc-for list="{{ cliHead }}" as="h"><div style="padding:10px 14px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#6E635B;background:#FAF7F2">{{ h }}</div></sc-for>
+      <sc-for list="{{ clis }}" as="c"><div onClick="{{ c.open }}" style="display:contents">
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD;font-weight:700;font-size:14px;cursor:pointer;color:#A04A2A">{{ c.n }}</div>
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD;font-size:14px">{{ c.tel }}</div>
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD;font-size:14px">{{ c.b }}</div>
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD;font-size:14px">{{ c.orc }}</div>
+        <div style="padding:12px 14px;border-top:1px solid #EFE8DD;font-size:14px;font-weight:700">{{ c.pago }}</div>
+      </div></sc-for>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ v.cliente }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+  <div style="display:flex;flex-direction:column;gap:4px"><button onClick="{{ goClientes }}" style="all:unset;cursor:pointer;font-size:13px;font-weight:700;color:#A04A2A">‹ Clientes</button><h1 style="margin:0;font-family:Jost,sans-serif;font-weight:500;font-size:30px">Mariana Couto</h1></div>
+  <div style="display:grid;grid-template-columns:320px minmax(0,1fr);gap:16px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="background:#fff;border:1px solid #E5DDD1;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;font-size:14px">
+        <b style="font-size:15px">Contato</b>
+        <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:#6E635B;font-weight:600">WhatsApp</span><span style="display:flex;justify-content:space-between"><b>(19) 99134-2280</b><a href="#" style="font-weight:700;font-size:13px">Abrir conversa</a></span></div>
+        <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:#6E635B;font-weight:600">E-mail</span><span>mariana.couto@gmail.com</span></div>
+        <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:#6E635B;font-weight:600">CPF</span><span>312.448.920-17</span></div>
+      </div>
+      <div style="background:#fff;border:1px solid #E5DDD1;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;font-size:14px">
+        <b style="font-size:15px">Endereços</b>
+        <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:#6E635B;font-weight:700">RESIDÊNCIA</span><span>R. Cel. Quirino, 1100, ap. 82 — Cambuí, Campinas/SP</span></div>
+        <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:#A04A2A;font-weight:700">OBRA</span><span>R. das Hortênsias, 240 — Alphaville Dom Pedro, Campinas/SP</span></div>
+      </div>
+      <div style="background:#2B2421;color:#fff;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:2px"><span style="font-size:13px;color:#E6DCD0">Total pago</span><b style="font-size:26px">R$ 7.325,21</b><span style="font-size:12px;color:#E6DCD0">Saldo em aberto R$ 1.777,65</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="background:#fff;border:1px solid #E5DDD1;border-radius:12px;overflow:hidden">
+        <div style="padding:12px 16px;font-weight:800;font-size:15px;border-bottom:1px solid #EFE8DD">Orçamentos</div>
+        <sc-for list="{{ fichaOrc }}" as="o"><div style="padding:10px 16px;border-bottom:1px solid #EFE8DD;display:grid;grid-template-columns:70px 100px minmax(0,1fr) 120px 130px;gap:10px;align-items:center;font-size:14px"><b>{{ o.n }}</b><span>{{ o.data }}</span><span style="color:#4A403A">{{ o.amb }}</span><b style="text-align:right">{{ o.valor }}</b><span style="display:inline-flex;justify-self:start;align-items:center;gap:5px;height:22px;padding:0 8px 0 4px;border-radius:11px;font-size:12px;font-weight:700;color:{{ o.b.fg }};background:{{ o.b.bg }}"><span style="width:15px;height:15px;border-radius:50%;background:{{ o.b.fg }};color:#fff;font-size:10px;display:grid;place-items:center">{{ o.b.i }}</span>{{ o.b.l }}</span></div></sc-for>
+      </div>
+      <div style="background:#fff;border:1px solid #E5DDD1;border-radius:12px;overflow:hidden">
+        <div style="padding:12px 16px;font-weight:800;font-size:15px;border-bottom:1px solid #EFE8DD">Recibos</div>
+        <sc-for list="{{ fichaRec }}" as="r"><div style="padding:10px 16px;border-bottom:1px solid #EFE8DD;display:grid;grid-template-columns:70px 100px minmax(0,1fr) 120px;gap:10px;font-size:14px"><b>{{ r.n }}</b><span>{{ r.data }}</span><span style="color:#4A403A">{{ r.ref }}</span><b style="text-align:right">{{ r.v }}</b></div></sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ sendOpen }}">
+  <div style="position:fixed;inset:0;z-index:50;background:rgba(43,36,33,.45);display:grid;place-items:center;padding:20px">
+    <div style="width:480px;max-width:100%;background:#fff;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:14px">
+      <div style="font-family:Jost,sans-serif;font-size:22px;font-weight:500">Enviar orçamento nº 0118</div>
+      <div style="font-size:14px;color:#4A403A">Para Mariana Couto · (19) 99134-2280. O status muda para <b>Enviado</b> e a validade começa a contar.</div>
+      <div style="padding:12px;border-radius:10px;background:#FAF7F2;font-size:13px;color:#4A403A">Olá, Mariana! Segue o orçamento das cortinas e persianas da obra na R. das Hortênsias. Você pode ver e aprovar pelo link: cristinas.app/o/0118-k7p2</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button onClick="{{ sendWa }}" style="height:44px;border-radius:8px;border:none;background:#2E6E47;color:#fff;font-weight:800;font-size:14px;cursor:pointer">Enviar por WhatsApp</button>
+        <div style="display:flex;gap:8px"><button onClick="{{ copyLink }}" style="flex:1;height:40px;border-radius:8px;border:1px solid #D9CFC1;background:#fff;font-weight:700;font-size:14px;cursor:pointer">Copiar link</button><a href="Impressos%20A4.dc.html#orcamento" style="flex:1;height:40px;border-radius:8px;border:1px solid #D9CFC1;display:grid;place-items:center;font-weight:700;font-size:14px;text-decoration:none;color:#2B2421">Baixar PDF</a></div>
+        <button onClick="{{ closeSend }}" style="height:36px;border:none;background:none;font-weight:700;font-size:13px;cursor:pointer;color:#6E635B">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;view&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;lista&quot;,&quot;editor&quot;,&quot;catalogo&quot;,&quot;clientes&quot;,&quot;cliente&quot;],&quot;default&quot;:&quot;editor&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;onNavigate&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(r:string)=&gt;void&quot;},&quot;toast&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(m:string)=&gt;void&quot;}}">
+const brl=n=>'R$ '+n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const mt=n=>n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+' m';
+const num=s=>parseFloat(String(s).replace(',','.'))||0;
+const CAT={
+ tecido:[{v:'linho',l:'Linho Toscana',p:89.9,rolo:'2,80 m'},{v:'voil',l:'Voil Seda',p:42.5,rolo:'3,00 m'},{v:'black',l:'Blackout Premium',p:76,rolo:'2,80 m'},{v:'gaze',l:'Gaze de Linho',p:64.9,rolo:'2,90 m'},{v:'jacq',l:'Jacquard Imperial',p:118,rolo:'2,80 m',off:true}],
+ persiana:[{v:'rolo',l:'Rolô blackout',p:189},{v:'dv',l:'Double vision',p:249},{v:'romana',l:'Romana',p:279},{v:'horiz',l:'Horizontal alumínio 25 mm',p:159}],
+ trilho:[{v:'suico',l:'Trilho suíço',p:58},{v:'varao',l:'Varão 28 mm',p:72},{v:'motor',l:'Trilho motorizado',p:390}],
+ acessorio:[{v:'motor',l:'Motor para cortina',p:1450},{v:'abr',l:'Abraçadeira de tecido',p:25},{v:'ponteira',l:'Ponteira decorativa (par)',p:48}],
+ servico:[{v:'inst',l:'Instalação',p:60},{v:'ret',l:'Retirada de cortina antiga',p:80},{v:'lav',l:'Lavagem e passadoria',p:120}]};
+const CONF={wave:{l:'Prega wave',f:2.5,c:28},americana:{l:'Prega americana',f:2.5,c:24},ilhos:{l:'Ilhós',f:2,c:18}};
+const MOD={cortina:Object.entries(CONF).map(([v,o])=>({v,l:o.l})),persiana:CAT.persiana.map(o=>({v:o.v,l:o.l})),trilho:[{v:'reto',l:'Reto'},{v:'curvo',l:'Curvo (sob medida)'}],acessorio:[{v:'un',l:'Unidade'}],servico:[{v:'vao',l:'Por vão'}]};
+const MAT={cortina:CAT.tecido.filter(x=>!x.off),persiana:[{v:'tela',l:'Tela screen 5%'},{v:'pvc',l:'PVC blackout'},{v:'alum',l:'Alumínio'}],trilho:CAT.trilho,acessorio:CAT.acessorio,servico:CAT.servico};
+const DEF={cortina:{modelo:'wave',mat:'linho'},persiana:{modelo:'rolo',mat:'tela'},trilho:{modelo:'reto',mat:'suico'},acessorio:{modelo:'un',mat:'abr'},servico:{modelo:'vao',mat:'ret'}};
+function calc(it){const w=num(it.w),h=num(it.h),L=[];const motor=it.acion==='motor';
+ if(it.tipo==='cortina'){const cf=CONF[it.modelo],tec=CAT.tecido.find(t=>t.v===it.mat);const m=w*cf.f;L.push({l:'Tecido',mem:`${mt(w)} × ${String(cf.f).replace('.',',')} = ${mt(m)} × ${brl(tec.p)}`,x:m*tec.p});L.push({l:'Confecção',mem:`${mt(m)} de tecido × ${brl(cf.c)} (${cf.l.toLowerCase()})`,x:m*cf.c});L.push({l:'Trilho',mem:`(${mt(w)} + 0,20 m de sobra) = ${mt(w+.2)} × ${brl(motor?390:58)}`,x:(w+.2)*(motor?390:58)});if(motor)L.push({l:'Motor',mem:'1 un × '+brl(1450),x:1450});L.push({l:'Instalação',mem:'1 vão × '+brl(60),x:60})}
+ else if(it.tipo==='persiana'){const p=CAT.persiana.find(x=>x.v===it.modelo);const a=w*h,c=Math.max(a,1.5);L.push({l:'Persiana',mem:`${mt(w)} × ${mt(h)} = ${a.toFixed(2).replace('.',',')} m²${a<1.5?' → mínimo 1,50 m²':''} × ${brl(p.p)}`,x:c*p.p});if(motor)L.push({l:'Motor',mem:'1 un × '+brl(980),x:980});L.push({l:'Instalação',mem:'1 vão × '+brl(60),x:60})}
+ else if(it.tipo==='trilho'){const p=CAT.trilho.find(x=>x.v===it.mat)||CAT.trilho[0];L.push({l:'Trilho',mem:`(${mt(w)} + 0,20 m) = ${mt(w+.2)} × ${brl(p.p)}`,x:(w+.2)*p.p})}
+ else{const p=(MAT[it.tipo].find(x=>x.v===it.mat))||MAT[it.tipo][0];L.push({l:it.tipo==='servico'?'Serviço':'Acessório',mem:`1 × ${brl(p.p)} (${p.l.toLowerCase()})`,x:p.p})}
+ const one=L.reduce((a,b)=>a+b.x,0);return{L,one,tot:one*(parseInt(it.q)||1)}}
+const ST={Rascunho:{fg:'#5E554E',bg:'#EEE9E2',i:'○'},Enviado:{fg:'#2D5B82',bg:'#E2ECF5',i:'↗'},Aprovado:{fg:'#2E6E47',bg:'#E3F0E7',i:'✓'},Recusado:{fg:'#B0263A',bg:'#FBE5E7',i:'✕'},Vencido:{fg:'#8A5A00',bg:'#FAEFD5',i:'◷'}};
+const PG={Pendente:{fg:'#8A5A00',bg:'#FAEFD5',i:'○'},Parcial:{fg:'#2D5B82',bg:'#E2ECF5',i:'◐'},Quitado:{fg:'#2E6E47',bg:'#E3F0E7',i:'✓'}};
+const LISTA=[['0121','Fernanda Lima','Sala e varanda','09/02/2026','11/03/2026',4280,'Rascunho'],['0120','Roberto e Sílvia Nunes','4 quartos','07/02/2026','09/03/2026',14870,'Enviado'],['0119','Juliana Prado','Sala de estar','02/02/2026','11/02/2026',2190,'Enviado'],['0118','Mariana Couto','Sala, quarto do casal, escritório','29/01/2026','28/02/2026',3277.65,'Aprovado','Parcial'],['0117','Clínica Viver Bem','Recepção e 3 consultórios','22/01/2026','21/02/2026',8950,'Aprovado','Quitado'],['0116','Paulo Henrique Assis','Quarto','20/01/2026','19/02/2026',1340,'Recusado'],['0115','Tatiane Ribeiro','Sala','05/01/2026','04/02/2026',3620,'Vencido'],['0114','Helena Carvalho','Sala e cozinha','03/01/2026','02/02/2026',5480,'Aprovado','Pendente'],['0113','Marcos Toledo','Escritório','28/12/2025','12/02/2026',890,'Enviado'],['0112','Luciana Barros','Casa inteira','15/12/2025','14/01/2026',12650,'Aprovado','Parcial']];
+const INIT=[{nome:'Sala',items:[{tipo:'cortina',modelo:'wave',mat:'linho',cor:'Areia',acion:'manual',w:'3,20',h:'2,70',q:'1'},{tipo:'cortina',modelo:'wave',mat:'voil',cor:'Off-white',acion:'manual',w:'3,20',h:'2,70',q:'1'}]},{nome:'Quarto do casal',items:[{tipo:'cortina',modelo:'americana',mat:'black',cor:'Grafite',acion:'manual',w:'2,40',h:'2,60',q:'1'}]},{nome:'Escritório',items:[{tipo:'persiana',modelo:'dv',mat:'tela',cor:'Linho cru',acion:'manual',w:'1,40',h:'1,60',q:'1'}]}];
+class Component extends DCLogic {
+  state={ambs:INIT,desc:'5',descMode:'pct',desl:'0,00',cond:'50% de sinal e 50% na instalação',send:false,saved:'Salvo às 10:02',q:'',sf:'Todos',catT:'tecido',off:{},cq:'',view:'editor'};
+  toast(m){this.props.toast&&this.props.toast(m)}
+  nav(v){this.props.onNavigate?this.props.onNavigate('orc.'+v):this.setState({view:v})}
+  upd(ai,ii,patch){this.setState(s=>({ambs:s.ambs.map((a,i)=>i!==ai?a:{...a,items:a.items.map((it,j)=>j!==ii?it:{...it,...patch})})}))}
+  renderVals(){const s=this.state,view=this.props.view??s.view;const v={lista:view==='lista',editor:view==='editor',catalogo:view==='catalogo',clientes:view==='clientes',cliente:view==='cliente'};
+    let sub=0;const ambs=s.ambs.map((a,ai)=>{let as=0;const items=a.items.map((it,ii)=>{const c=calc(it);as+=c.tot;const q=parseInt(it.q)||1;return{...it,hasAcion:it.tipo==='cortina'||it.tipo==='persiana',hasW:['cortina','persiana','trilho'].includes(it.tipo),hasH:it.tipo==='cortina'||it.tipo==='persiana',matL:it.tipo==='cortina'?'Tecido':it.tipo==='persiana'?'Material':'Item do catálogo',mOpts:MOD[it.tipo],matOpts:MAT[it.tipo].map(o=>({v:o.v,l:o.l+(o.p?' · '+brl(o.p):'')})),lines:c.L.map(l=>({l:l.l,mem:l.mem,v:brl(l.x)})),qMem:q>1?`${brl(c.one)} × ${q} un`:'1 un',tot:brl(c.tot),manBg:it.acion==='manual'?'#fff':'transparent',motBg:it.acion==='motor'?'#fff':'transparent',
+      onTipo:e=>{const t=e.target.value;this.upd(ai,ii,{tipo:t,...DEF[t]})},onModelo:e=>this.upd(ai,ii,{modelo:e.target.value}),onMat:e=>this.upd(ai,ii,{mat:e.target.value}),onCor:e=>this.upd(ai,ii,{cor:e.target.value}),onW:e=>this.upd(ai,ii,{w:e.target.value}),onH:e=>this.upd(ai,ii,{h:e.target.value}),onQ:e=>this.upd(ai,ii,{q:e.target.value.replace(/\D/g,'')}),onManual:()=>this.upd(ai,ii,{acion:'manual'}),onMotor:()=>this.upd(ai,ii,{acion:'motor'}),
+      dup:()=>{this.setState(x=>({ambs:x.ambs.map((A,i)=>i!==ai?A:{...A,items:[...A.items.slice(0,ii+1),{...it},...A.items.slice(ii+1)]})}));this.toast('Item duplicado')},del:()=>this.setState(x=>({ambs:x.ambs.map((A,i)=>i!==ai?A:{...A,items:A.items.filter((_,j)=>j!==ii)})}))}});sub+=as;
+      return{nome:a.nome,items,sub:brl(as),nItens:a.items.length+(a.items.length===1?' item':' itens'),onNome:e=>this.setState(x=>({ambs:x.ambs.map((A,i)=>i===ai?{...A,nome:e.target.value}:A)})),dup:()=>{this.setState(x=>({ambs:[...x.ambs.slice(0,ai+1),{nome:a.nome+' (cópia)',items:a.items.map(i=>({...i}))},...x.ambs.slice(ai+1)]}));this.toast('Ambiente duplicado')},del:()=>this.setState(x=>({ambs:x.ambs.filter((_,i)=>i!==ai)})),add:()=>this.setState(x=>({ambs:x.ambs.map((A,i)=>i===ai?{...A,items:[...A.items,{tipo:'cortina',...DEF.cortina,cor:'',acion:'manual',w:'2,00',h:'2,60',q:'1'}]}:A)}))}});
+    const d=num(s.desc),descV=s.descMode==='pct'?sub*d/100:d,desl=num(s.desl),total=sub-descV+desl;
+    const tab=on=>({bd:on?'#2B2421':'#D9CFC1',bg:on?'#2B2421':'#fff',fg:on?'#fff':'#2B2421'});
+    const lista=LISTA.filter(o=>(s.sf==='Todos'||o[6]===s.sf)&&(!s.q||(o[0]+o[1]).toLowerCase().includes(s.q.toLowerCase()))).map(o=>({n:o[0],cli:o[1],amb:o[2],data:o[3],val:o[4],valor:brl(o[5]),b:{...ST[o[6]],l:o[6]},hasPg:!!o[7],pg:o[7]?{...PG[o[7]],l:o[7]}:{},vfg:o[0]==='0119'||o[0]==='0113'?'#8A5A00':'#2B2421',vfw:o[0]==='0119'||o[0]==='0113'?800:400,open:()=>o[0]==='0118'?this.nav('editor'):this.toast('Abrindo orçamento '+o[0])}));
+    const catRegra={tecido:'Largura do vão × fator de franzimento (wave 2,5 · americana 2,5 · ilhós 2,0) = metros de tecido × preço por metro. Confecção cobrada por metro de tecido.',persiana:'Largura × altura = m², com área mínima cobrada de 1,50 m² × preço por m².',trilho:'(Largura + 20 cm de sobra) × preço por metro.',acessorio:'Preço por unidade.',servico:'Preço por vão ou por serviço.'}[s.catT];
+    const unid={tecido:'m',persiana:'m²',trilho:'m',acessorio:'unidade',servico:'vão'}[s.catT];
+    const catRows=(s.catT==='persiana'?CAT.persiana:CAT[s.catT]).map(r=>{const off=s.off[r.v]??!!r.off;return{n:r.l,u:unid,p:brl(r.p),rolo:r.rolo||'—',tg:off?'#CFC3B3':'#2E6E47',knob:off?'2px':'18px',al:off?'Inativo':'Ativo',fg:off?'#8A7F76':'#2B2421',toggle:()=>this.setState(x=>({off:{...x.off,[r.v]:!off}}))}});
+    const CLIS=[['Mariana Couto','(19) 99134-2280','Cambuí','3','R$ 7.325,21'],['Roberto e Sílvia Nunes','(19) 98821-0034','Nova Campinas','1','—'],['Clínica Viver Bem','(19) 3251-8890','Taquaral','2','R$ 12.400,00'],['Juliana Prado','(19) 99702-5561','Barão Geraldo','1','—'],['Helena Carvalho','(19) 99455-1208','Guanabara','2','R$ 3.120,00'],['Luciana Barros','(19) 98134-7712','Sousas','1','R$ 6.325,00'],['Fernanda Lima','(19) 99210-4486','Castelo','1','—'],['Marcos Toledo','(19) 99878-3301','Jardim Chapadão','1','—']];
+    const clis=CLIS.filter(c=>!s.cq||c.join(' ').toLowerCase().includes(s.cq.toLowerCase())).map(c=>({n:c[0],tel:c[1],b:c[2],orc:c[3],pago:c[4],open:()=>c[0]==='Mariana Couto'?this.nav('cliente'):this.toast('Abrindo ficha de '+c[0])}));
+    return{v,ambs,t:{sub:brl(sub),desc:brl(descV),total:brl(total),cond:s.cond+' · sinal de '+brl(total/2),pctBg:s.descMode==='pct'?'#fff':'transparent',brlBg:s.descMode==='brl'?'#fff':'transparent'},
+      desc:s.desc,onDesc:e=>this.setState({desc:e.target.value}),desl:s.desl,onDesl:e=>this.setState({desl:e.target.value}),descPct:()=>this.setState({descMode:'pct'}),descBrl:()=>this.setState({descMode:'brl'}),cond:s.cond,onCond:e=>this.setState({cond:e.target.value}),
+      headF:[{l:'Data',v:'29/01/2026'},{l:'Validade',v:'28/02/2026 (30 dias)'},{l:'Prazo de entrega',v:'20 dias úteis após o sinal'},{l:'Vendedora',v:'Cristina'}],
+      addAmb:()=>this.setState(x=>({ambs:[...x.ambs,{nome:'Novo ambiente',items:[{tipo:'cortina',...DEF.cortina,cor:'',acion:'manual',w:'2,00',h:'2,60',q:'1'}]}]})),
+      salvar:()=>{this.setState({saved:'Salvo agora'});this.toast('Rascunho salvo')},enviar:()=>this.setState({send:true}),sendOpen:s.send,closeSend:()=>this.setState({send:false}),sendWa:()=>{this.setState({send:false});this.toast('Orçamento 0118 enviado por WhatsApp')},copyLink:()=>this.toast('Link copiado'),savedTxt:s.saved,quickCli:()=>this.toast('Cadastro rápido de cliente'),
+      goLista:()=>this.nav('lista'),novo:()=>this.nav('editor'),q:s.q,onQ:e=>this.setState({q:e.target.value}),
+      stOpts:['Todos','Rascunho','Enviado','Aprovado','Recusado','Vencido'].map(l=>({l,on:()=>this.setState({sf:l}),...tab(s.sf===l)})),
+      lHead:[{l:'Nº',a:'left'},{l:'Cliente',a:'left'},{l:'Data',a:'left'},{l:'Validade',a:'left'},{l:'Valor',a:'right'},{l:'Status',a:'left'},{l:'Pagamento',a:'left'}],lista,listaN:lista.length,listaVazia:!lista.length,
+      catTabs:[['tecido','Tecidos'],['persiana','Persianas'],['trilho','Trilhos e varões'],['acessorio','Acessórios'],['servico','Serviços']].map(([k,l])=>({l,on:()=>this.setState({catT:k}),...tab(s.catT===k)})),cat:{regra:catRegra,rows:catRows},catHead:['Produto','Unidade','Preço','Largura do rolo','Situação'],novoProd:()=>this.toast('Novo produto'),
+      cq:s.cq,onCq:e=>this.setState({cq:e.target.value}),clis,cliHead:['Nome','Telefone','Bairro','Orçamentos','Total pago'],goClientes:()=>this.nav('clientes'),
+      fichaOrc:[{n:'0118',data:'29/01/2026',amb:'Sala, quarto do casal, escritório',valor:'R$ 3.277,65',b:{...ST.Aprovado,l:'Aprovado'}},{n:'0098',data:'14/10/2025',amb:'Varanda gourmet',valor:'R$ 5.825,21',b:{...ST.Aprovado,l:'Aprovado'}},{n:'0087',data:'02/09/2025',amb:'Quarto de hóspedes',valor:'R$ 1.180,00',b:{...ST.Vencido,l:'Vencido'}}],
+      fichaRec:[{n:'0042',data:'30/01/2026',ref:'Sinal · orçamento 0118',v:'R$ 1.500,00'},{n:'0031',data:'05/11/2025',ref:'Quitação · orçamento 0098',v:'R$ 2.912,61'},{n:'0027',data:'16/10/2025',ref:'Sinal · orçamento 0098',v:'R$ 2.912,60'}]};
+  }
+}
+</script>
+</body>
+</html>

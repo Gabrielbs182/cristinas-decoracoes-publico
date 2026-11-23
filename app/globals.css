@@ -1,0 +1,78 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@fontsource-variable/manrope";
+@import "@fontsource-variable/jost";
+
+/*
+ * Tokens do design (protótipo do Claude Design, docs/design/prototipo).
+ * Paleta derivada do logo: creme, tinta quente e terracota. Apenas tema claro.
+ */
+@theme {
+  --font-sans: "Manrope Variable", system-ui, sans-serif;
+  --font-display: "Jost Variable", system-ui, sans-serif;
+
+  /* texto e superfícies */
+  --color-tinta: #2b2421;
+  --color-tinta-2: #4a403a;
+  --color-tinta-3: #6e635b;
+  --color-tinta-4: #8a7f76;
+  --color-fundo: #f6f2eb;
+  --color-lateral: #fbf8f3;
+  --color-creme: #f3eee4;
+  --color-superficie: #ffffff;
+  --color-suave: #faf7f2;
+  --color-trilho: #efe8dd;
+  --color-segmento: #f3eee6;
+  --color-borda: #e5ddd1;
+  --color-borda-campo: #d9cfc1;
+  --color-borda-forte: #c9b9a6;
+  --color-tracejado: #cfc3b3;
+
+  /* marca */
+  --color-terracota: #a04a2a;
+  --color-terracota-escuro: #7e3820;
+  --color-terracota-claro: #f5e5db;
+  --color-terracota-barra: #c2683f;
+
+  /* estados (sempre com ícone + texto, nunca só cor) */
+  --color-sucesso: #2e6e47;
+  --color-sucesso-fundo: #e3f0e7;
+  --color-perigo: #b0263a;
+  --color-perigo-fundo: #fbe5e7;
+  --color-perigo-borda: #f0c9ce;
+  --color-atencao: #8a5a00;
+  --color-atencao-fundo: #faefd5;
+  --color-atencao-borda: #eed9ae;
+  --color-info: #2d5b82;
+  --color-info-fundo: #e2ecf5;
+  --color-info-texto: #1f4466;
+  --color-ajuste: #6b4a8e;
+  --color-ajuste-fundo: #eee7f5;
+  --color-neutro: #5e554e;
+  --color-neutro-fundo: #eee9e2;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+  body {
+    background: var(--color-fundo);
+    color: var(--color-tinta);
+    font-family: var(--font-sans);
+    /* horas e valores alinham em coluna */
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing: antialiased;
+  }
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+    font-variant-numeric: tabular-nums;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-terracota);
+    outline-offset: 2px;
+  }
+}

@@ -1,0 +1,3 @@
+-- Roda só no `supabase db reset` local. Dado que a produção precisa (empresa, regra de ponto, feriados nacionais)
+-- mora nas migrações (20261028090000_producao.sql): a VPS não roda este arquivo.
+-- Usuários e funcionárias de desenvolvimento ficam em scripts/seed-dev.ts, que usa a API de admin.

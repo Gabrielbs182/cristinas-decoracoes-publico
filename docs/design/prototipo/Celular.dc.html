@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>body{margin:0;font-family:Manrope,system-ui,sans-serif;color:#2B2421;background:#E9E3DA}a{color:#A04A2A}a:hover{color:#7E3820}button,input,select,textarea{font-family:inherit;font-variant-numeric:tabular-nums}*{box-sizing:border-box}</style>
+</helmet>
+<div style="font-family:Manrope,system-ui,sans-serif;color:#2B2421;font-variant-numeric:tabular-nums;padding:48px;display:flex;flex-direction:column;gap:56px;background:#E9E3DA;min-width:max-content">
+  <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:800;letter-spacing:.08em;color:#6E635B">CRISTINA'S DECORAÇÕES · CELULAR 390 PX</span><span style="font-family:Jost,sans-serif;font-size:34px;font-weight:400">Login, gestora em campo e portal da funcionária</span><a href="Sistema%20Cristinas.dc.html" style="font-weight:700;font-size:14px">‹ Voltar ao protótipo desktop</a></div>
+
+  <section style="display:flex;flex-direction:column;gap:18px">
+    <span style="font-family:Jost,sans-serif;font-size:24px;font-weight:500">Gestora</span>
+    <div style="display:flex;gap:40px;align-items:flex-start">
+      <div style="display:flex;flex-direction:column;gap:10px"><b style="font-size:14px">Login</b>
+        <div style="width:390px;height:844px;border-radius:32px;overflow:hidden;background:#fff;box-shadow:0 12px 32px rgba(43,36,33,.14);display:flex;flex-direction:column">
+          <div style="background:#F3EEE4;height:340px;display:grid;place-items:center"><div style="width:250px;height:250px;border-radius:50%;background-image:url('assets/logo-cristinas.png');background-size:151.6% auto;background-position:50% 45.6%"></div></div>
+          <div style="padding:24px 22px;display:flex;flex-direction:column;gap:14px">
+            <span style="font-family:Jost,sans-serif;font-size:26px;font-weight:400">Entrar</span>
+            <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:14px;font-weight:700">E-mail ou usuário</span><input value="bruna.s" style="height:50px;border:1px solid #D9CFC1;border-radius:10px;padding:0 14px;font-size:16px"></label>
+            <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:14px;font-weight:700">Senha</span><input type="password" value="12345678" style="height:50px;border:1px solid #D9CFC1;border-radius:10px;padding:0 14px;font-size:16px"></label>
+            <button style="height:52px;border-radius:10px;border:none;background:#A04A2A;color:#fff;font-weight:800;font-size:16px">Entrar</button>
+            <button style="height:44px;border:none;background:none;color:#A04A2A;font-weight:700;font-size:14px">Esqueci minha senha</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px"><b style="font-size:14px">Início da gestora</b>
+        <div style="width:390px;height:844px;border-radius:32px;overflow:hidden;background:#F6F2EB;box-shadow:0 12px 32px rgba(43,36,33,.14);display:flex;flex-direction:column">
+          <div style="padding:18px;background:#fff;border-bottom:1px solid #E5DDD1;display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:#6E635B;font-weight:600">Segunda, 09/02/2026</span><span style="font-family:Jost,sans-serif;font-size:24px;font-weight:400">Bom dia, Cristina</span></div>
+          <div style="flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px">
+            <div style="background:#fff;border:1px solid #E5DDD1;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px"><span style="font-size:12px;font-weight:800;color:#6E635B">PONTO · SEMANA 02/02</span><div style="display:flex;align-items:baseline;gap:8px"><b style="font-size:32px">8</b><span style="font-weight:700">pendências</span></div><span style="display:inline-flex;align-self:flex-start;align-items:center;gap:5px;height:26px;padding:0 10px 0 4px;border-radius:13px;font-size:13px;font-weight:800;color:#fff;background:#B0263A"><span style="width:18px;height:18px;border-radius:50%;background:#fff;color:#B0263A;font-size:11px;display:grid;place-items:center">!</span>3 bloqueiam o fechamento</span><span style="height:44px;border-radius:10px;background:#F5E5DB;color:#7E3820;font-weight:800;font-size:14px;display:grid;place-items:center">Revisar pendências</span></div>
+            <div style="background:#fff;border:1px solid #E5DDD1;border-radius:14px;padding:16px;display:flex;justify-content:space-between;align-items:center;min-height:64px"><div style="display:flex;flex-direction:column"><span style="font-size:12px;font-weight:800;color:#6E635B">SOLICITAÇÕES</span><b style="font-size:16px">2 aguardando resposta</b></div><span style="font-size:22px;color:#A04A2A">›</span></div>
+            <div style="background:#fff;border:1px solid #E5DDD1;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:6px"><span style="font-size:12px;font-weight:800;color:#6E635B">ORÇAMENTOS ENVIADOS</span><b style="font-size:16px">3 aguardando · 2 vencem em até 3 dias</b><span style="font-size:14px;color:#4A403A">0119 Juliana Prado · vence 11/02</span></div>
+            <div style="background:#2B2421;color:#fff;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;font-weight:800;color:#E6DCD0">A RECEBER</span><b style="font-size:26px">R$ 10.582,65</b><span style="font-size:13px;color:#E6DCD0">3 orçamentos aprovados</span></div>
+            <div style="background:#fff;border:1px solid #E5DDD1;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:6px"><span style="font-size:12px;font-weight:800;color:#6E635B">HORA DE CORTE</span><span style="font-size:14px"><b style="color:#2E6E47">✓ Ana Paula</b> e <b style="color:#2E6E47">✓ Denise</b> fecharam · Bruna 6h54</span></div>
+          </div>
+          <div style="padding:12px 14px 18px;background:#fff;border-top:1px solid #E5DDD1;display:flex;gap:8px"><span style="flex:1;height:50px;border-radius:12px;background:#A04A2A;color:#fff;font-weight:800;font-size:15px;display:grid;place-items:center">+ Visita técnica</span><span style="flex:1;height:50px;border-radius:12px;border:1px solid #D9CFC1;font-weight:800;font-size:15px;display:grid;place-items:center">+ Recibo</span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px"><b style="font-size:14px">Visita técnica · editor de orçamento (interativo)</b>
+        <div style="width:390px;height:844px;border-radius:32px;overflow:hidden;background:#F6F2EB;box-shadow:0 12px 32px rgba(43,36,33,.14);display:flex;flex-direction:column;position:relative">
+          <div style="padding:14px 16px 10px;background:#fff;border-bottom:1px solid #E5DDD1;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;flex-direction:column"><span style="font-size:12px;color:#6E635B;font-weight:600">Orçamento 0121 · rascunho</span><b style="font-size:16px">Fernanda Lima · Castelo</b></div><span style="font-size:12px;font-weight:800;color:#2E6E47">✓ salvo</span></div>
+            <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:2px">
+              <sc-for list="{{ vAmbs }}" as="a"><button onClick="{{ a.on }}" style="flex:none;height:44px;padding:0 14px;border-radius:22px;border:1.5px solid {{ a.bd }};background:{{ a.bg }};color:{{ a.fg }};font-weight:800;font-size:14px;cursor:pointer">{{ a.l }}</button></sc-for>
+              <button onClick="{{ vAddAmb }}" style="flex:none;height:44px;padding:0 14px;border-radius:22px;border:1.5px dashed #CFC3B3;background:#fff;color:#A04A2A;font-weight:800;font-size:14px;cursor:pointer">+ Ambiente</button>
+            </div>
+          </div>
+          <div style="flex:1;overflow:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><b style="font-size:15px">{{ vItemTitle }}</b><span style="font-size:13px;color:#6E635B">{{ vDone }}</span></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><sc-for list="{{ vTipos }}" as="t"><button onClick="{{ t.on }}" style="height:44px;border-radius:10px;border:1.5px solid {{ t.bd }};background:{{ t.bg }};color:{{ t.fg }};font-weight:800;font-size:14px;cursor:pointer">{{ t.l }}</button></sc-for></div>
+            <select value="{{ vMat }}" onChange="{{ vOnMat }}" style="height:46px;border:1px solid #D9CFC1;border-radius:10px;padding:0 12px;font-size:15px;background:#fff"><sc-for list="{{ vMatOpts }}" as="o"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <button onClick="{{ vFocusW }}" style="all:unset;box-sizing:border-box;cursor:pointer;height:84px;border-radius:12px;border:2px solid {{ vW.bd }};background:#fff;padding:10px 12px;display:flex;flex-direction:column;justify-content:space-between"><span style="font-size:12px;font-weight:800;color:#6E635B">LARGURA</span><span style="display:flex;align-items:baseline;gap:4px"><b style="font-size:30px">{{ vW.v }}</b><span style="font-size:14px;color:#6E635B">cm</span></span></button>
+              <button onClick="{{ vFocusH }}" style="all:unset;box-sizing:border-box;cursor:pointer;height:84px;border-radius:12px;border:2px solid {{ vH.bd }};background:#fff;padding:10px 12px;display:flex;flex-direction:column;justify-content:space-between"><span style="font-size:12px;font-weight:800;color:#6E635B">ALTURA</span><span style="display:flex;align-items:baseline;gap:4px"><b style="font-size:30px">{{ vH.v }}</b><span style="font-size:14px;color:#6E635B">cm</span></span></button>
+            </div>
+            <div style="font-size:13px;padding:10px 12px;border-radius:10px;background:#fff;border:1px solid #E5DDD1;color:#4A403A">{{ vMem }}</div>
+            <sc-for list="{{ vItems }}" as="i"><div style="display:flex;justify-content:space-between;font-size:13px;padding:8px 12px;border-radius:8px;background:#EFE8DD"><span>✓ {{ i.l }}</span><b>{{ i.v }}</b></div></sc-for>
+          </div>
+          <div style="background:#2B2421;color:#fff;padding:10px 16px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:#E6DCD0">Total · {{ vCount }}</span><b style="font-size:20px">{{ vTotal }}</b></div>
+          <div style="background:#fff;padding:8px 8px 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px">
+            <sc-for list="{{ keys }}" as="k"><button onClick="{{ k.on }}" style="height:54px;border-radius:10px;border:none;background:{{ k.bg }};color:{{ k.fg }};font-size:{{ k.fs }};font-weight:800;cursor:pointer;grid-column:{{ k.span }}">{{ k.l }}</button></sc-for>
+          </div>
+          <sc-if value="{{ vToastOn }}"><div style="position:absolute;left:14px;right:14px;top:120px;background:#2E6E47;color:#fff;padding:12px 14px;border-radius:10px;font-size:14px;font-weight:800">✓ {{ vToast }}</div></sc-if>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px"><b style="font-size:14px">Emitir recibo (interativo)</b>
+        <div style="width:390px;height:844px;border-radius:32px;overflow:auto;background:#F6F2EB;box-shadow:0 12px 32px rgba(43,36,33,.14);padding:20px 16px">
+          <dc-import name="Recibos" view="emitir" hint-size="358px,1200px"></dc-import>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:18px">
+    <span style="font-family:Jost,sans-serif;font-size:24px;font-weight:500">Portal da funcionária · Bruna</span>
+    <div style="display:flex;gap:40px;align-items:flex-start">
+      <sc-for list="{{ portal }}" as="p" hint-placeholder-count="6">
+        <div style="display:flex;flex-direction:column;gap:10px"><b style="font-size:14px">{{ p.l }}</b>
+          <div style="width:390px;height:844px;border-radius:32px;overflow:hidden;background:#F6F2EB;box-shadow:0 12px 32px rgba(43,36,33,.14)"><dc-import name="PortalFuncionaria" tab="{{ p.t }}" hint-size="390px,844px" style="width:100%;height:100%;display:block"></dc-import></div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const brl=n=>'R$ '+n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const MATS={cortina:[['linho','Linho Toscana · prega wave',89.9],['voil','Voil Seda · prega wave',42.5],['black','Blackout Premium · prega americana',76]],persiana:[['rolo','Rolô blackout',189],['dv','Double vision',249],['romana','Romana',279]]};
+function price(it){const w=(+it.w||0)/100,h=(+it.h||0)/100;if(it.tipo==='cortina'){const p=MATS.cortina.find(m=>m[0]===it.mat)||MATS.cortina[0];const m=w*2.5;return{v:m*p[2]+m*28+(w+.2)*58+60,mem:`Tecido ${(w).toFixed(2).replace('.',',')} m × 2,5 = ${m.toFixed(2).replace('.',',')} m × ${brl(p[2])} + confecção + trilho + instalação`}}const p=MATS.persiana.find(m=>m[0]===it.mat)||MATS.persiana[0];const a=w*h,c=Math.max(a,1.5);return{v:c*p[2]+60,mem:`${w.toFixed(2).replace('.',',')} × ${h.toFixed(2).replace('.',',')} = ${a.toFixed(2).replace('.',',')} m²${a<1.5?' → mínimo 1,50 m²':''} × ${brl(p[2])} + instalação`}}
+class Component extends DCLogic {
+  state={ambs:[{nome:'Sala',items:[{tipo:'cortina',mat:'linho',w:'320',h:'270'}]},{nome:'Varanda',items:[]}],a:0,cur:{tipo:'cortina',mat:'linho',w:'',h:''},f:'w',t:''};
+  toast(m){this.setState({t:m});clearTimeout(this._t);this._t=setTimeout(()=>this.setState({t:''}),1600)}
+  press(k){const s=this.state,c={...s.cur};if(k==='del'){c[s.f]=c[s.f].slice(0,-1);return this.setState({cur:c})}if(k==='next'){if(s.f==='w'&&c.w)return this.setState({f:'h'});if(c.w&&c.h){const ambs=s.ambs.map((A,i)=>i===s.a?{...A,items:[...A.items,c]}:A);this.setState({ambs,cur:{tipo:c.tipo,mat:c.mat,w:'',h:''},f:'w'});this.toast('Item salvo em '+s.ambs[s.a].nome+' · próximo vão')}return}if(c[s.f].length<4)c[s.f]+=k;this.setState({cur:c})}
+  renderVals(){const s=this.state,c=s.cur;let total=0,count=0;s.ambs.forEach(A=>A.items.forEach(i=>{total+=price(i).v;count++}));const A=s.ambs[s.a];const pc=c.w&&c.h?price(c):null;
+    const keys=['1','2','3','4','5','6','7','8','9','del','0','next'].map(k=>({l:k==='del'?'⌫':k==='next'?(s.f==='w'?'Altura →':'Salvar →'):k,on:()=>this.press(k),bg:k==='next'?'#A04A2A':'#F3EEE6',fg:k==='next'?'#fff':'#2B2421',fs:k==='next'?'15px':'22px',span:'auto'}));
+    return{vAmbs:s.ambs.map((x,i)=>({l:x.nome+(x.items.length?' · '+x.items.length:''),on:()=>this.setState({a:i}),bd:i===s.a?'#A04A2A':'#D9CFC1',bg:i===s.a?'#F5E5DB':'#fff',fg:i===s.a?'#7E3820':'#2B2421'})),vAddAmb:()=>this.setState(x=>({ambs:[...x.ambs,{nome:['Quarto','Escritório','Cozinha'][x.ambs.length%3],items:[]}],a:x.ambs.length})),
+      vItemTitle:A.nome+' · vão '+(A.items.length+1),vDone:A.items.length?A.items.length+' salvo(s)':'nenhum vão ainda',
+      vTipos:[['cortina','Cortina'],['persiana','Persiana']].map(([k,l])=>({l,on:()=>this.setState({cur:{...c,tipo:k,mat:MATS[k][0][0]}}),bd:c.tipo===k?'#2B2421':'#D9CFC1',bg:c.tipo===k?'#2B2421':'#fff',fg:c.tipo===k?'#fff':'#2B2421'})),
+      vMat:c.mat,vOnMat:e=>this.setState({cur:{...c,mat:e.target.value}}),vMatOpts:MATS[c.tipo].map(m=>({v:m[0],l:m[1]+' · '+brl(m[2])+(c.tipo==='persiana'?'/m²':'/m')})),
+      vW:{v:c.w||'—',bd:s.f==='w'?'#A04A2A':'#E5DDD1'},vH:{v:c.h||'—',bd:s.f==='h'?'#A04A2A':'#E5DDD1'},vFocusW:()=>this.setState({f:'w'}),vFocusH:()=>this.setState({f:'h'}),
+      vMem:pc?pc.mem+' = '+brl(pc.v):'Digite a largura e a altura do vão em centímetros.',vItems:A.items.map(i=>({l:(i.tipo==='cortina'?'Cortina ':'Persiana ')+i.w+' × '+i.h+' cm',v:brl(price(i).v)})),
+      vTotal:brl(total+(pc?pc.v:0)),vCount:count+' itens',keys,vToastOn:!!s.t,vToast:s.t,
+      portal:[['ponto','Meu ponto'],['banco','Meu banco de horas'],['pendencias','Minhas pendências'],['corrigir','Pedir correção (pré-preenchida)'],['solicitacoes','Minhas solicitações'],['espelhos','Meus espelhos']].map(([t,l])=>({t,l}))};
+  }
+}
+</script>
+</body>
+</html>

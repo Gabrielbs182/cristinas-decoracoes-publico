@@ -1,0 +1,5 @@
+# LF em todo arquivo de texto, em qualquer sistema (o teste do roadmap compara o ROADMAP.md byte a byte).
+* text=auto eol=lf
+*.png binary
+*.webp binary
+*.ico binary
